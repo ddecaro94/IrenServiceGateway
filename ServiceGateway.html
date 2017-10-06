@@ -216,7 +216,7 @@
 
                     <br>
 
-                    <div class="service-gw">
+                    <div class="service-gw" style="margin-left: 0px;">
                         <h3>Trova utente</h3>
                         <input id="searchUser" type="text" class="typeahead tt-query" autocomplete="off" spellcheck="false">
                     </div>
@@ -250,7 +250,7 @@
                 </div>
                 <script>
 					var engine = null;
-					
+					var token = new URLSearchParams(window.location.search).get('user');
 					function refreshUsers(){
 						var contact = null;
 						var xhttp = new XMLHttpRequest();
@@ -373,7 +373,7 @@
                                     <th class="pull-right">Grant</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="scrollable-tbody">
                                 <tr>
                                     <td>NomeServizio
                                         <div class="col-md-12">
@@ -957,7 +957,6 @@
                                     btnCancelClass: "btn btn-sm btn-default",
                                     btnCancelLabel: "Cancel",
                                     btnCancelIcon: "glyphicon glyphicon-remove",
-                                    href: "#",
                                     target: "_self",
                                     singleton: !0,
                                     popout: !0,
