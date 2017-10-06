@@ -288,7 +288,7 @@
 
                 <div class="bs-example">
                     <h1>Gestione Utente</h1>
-                    <br>
+                    <hr>
                     <form id="addUser" class="form-horizontal" action="http://ibmsvlib01:7800/sys/users" method="post">
                         <div class="form-group">
                             <div class="col-lg-9">
@@ -328,6 +328,12 @@
 
                         </tbody>
                     </table>
+					
+					<div class="modal-footer">
+
+                    <img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png"></img>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
                 </div>
                 <script>
                     $("#addUser").submit(function(e) {
@@ -379,11 +385,7 @@
                     });
                 </script>
 
-                <div class="modal-footer">
-
-                    <img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png"></img>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
+                
 
             </div>
         </div>
@@ -660,15 +662,19 @@
                                                 <hr>
                                                 <div class="row">
 
-                                                    <div class="col-xs-8">
+                                                    <div class="col-xs-12">
 
                                                         <div class="form-group">
 
                                                             <input type="file" name="example" id="input05">
+															
                                                         </div>
 
                                                     </div>
-
+													<div class="col-xs-12">
+													<input type="submit" class="btn btn-primary" value="Submit">
+                                                            <input type="reset" class="btn btn-default" value="Reset" onclick="myFunction1()">
+													</div>
                                                 </div>
 
                                                 <div class="form-group">
@@ -681,8 +687,7 @@
                                                     <div class="col-xs-12">
                                                         <div class="form-group">
                                                             <div class="col-xs-offset-4 col-xs-12">
-                                                                <input type="submit" class="btn btn-primary" value="Submit">
-                                                                <input type="reset" class="btn btn-default" value="Reset" onclick="myFunction1()">
+                                                                
 
                                                                 <script>
                                                                     function myFunction1() {
@@ -696,6 +701,7 @@
 
                                                 </div>
                                             </form>
+											
                                             <script>
                                                 var fileInput = document.getElementById('input05');
 
@@ -758,13 +764,14 @@
                                             </script>
 
                                         </div>
-                                    </div>
-
                                     <div class="modal-footer">
 
                                         <img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png"></img>
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                     </div>
+                                    </div>
+
+
 
                                 </div>
                             </div>
@@ -778,7 +785,7 @@
 
                                     <div class="bs-example">
                                         <h1>Parameters</h1>
-
+										<hr>
                                         <!--form id="upload" role="form" action="http://ibmsvlib01:7800/sys/download_clob?db=INT_ENGINE" enctype="multipart/form-data" method="post"-->
                                         <form id="download" class="form-horizontal" action="http://ibmsvlib01:7800/sys/download_clob?db=INT_ENGINE" enctype="multipart/form-data" method="post">
                                             <div class="form-group">
