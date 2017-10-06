@@ -55,10 +55,12 @@
         }
     </style>
 
+    <script type="text/javascript" src="http://ibmsvlib01:7800/sys/download?filename=/scripts/bootstrap-filestyle.js"></script>
+
+    <script type="text/javascript" src="http://ibmsvlib01:7800/sys/download?filename=/scripts/typeahead.js"></script>
+
     <style type="text/css">
-        .bs-example {
-            margin: 20px;
-        }
+
         
         .scrollable-menu {
             min-width: 220px;
@@ -79,94 +81,19 @@
             width: 100%;
             table-layout: fixed;
         }
-    </style>
-
-    <script type="text/javascript" src="http://ibmsvlib01:7800/sys/download?filename=/scripts/bootstrap-filestyle.js"></script>
-
-    <script type="text/javascript" src="http://ibmsvlib01:7800/sys/download?filename=/scripts/typeahead.js"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function(e) {
-            var contact = null;
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    // Typical action to be performed when the document is ready:
-                    contact = xhttp.responseText;
-                    var body = $("#users");
-                    body.empty();
-                    var users = JSON.parse(contact).map(function(obj) {
-                        return obj.USERNAME;
-                    });
-                    JSON.parse(contact).forEach(function(obj) {
-                        body.append('<tr>' +
-                            '<td style="vertical-align:middle;">' + obj.ID_USER + '</td>' +
-                            '<td style="vertical-align:middle;">' + obj.USERNAME + '</td>' +
-                            '<td style="vertical-align:middle;">' + obj.TOKEN + '</td>' +
-                            '<td style="vertical-align:middle;">' +
-                            '<div class="row">' +
-                            '<a href="#" class="material-icons" data-toggle="confirmation" style="font-size:25px;color:red" >delete_sweep</a>' +
-                            '</div>' +
-                            '</div>' +
-                            '</td>' +
-                            '<td style="vertical-align:middle;"><div class="row"><div class="col-md-12 align-center"><a href="#regole"  class="material-icons" data-toggle="modal" style="font-size:25px;" >https</a</div></div></td></tr>');
-                    });
-
-                    // Constructing the suggestion engine
-                    var engine = new Bloodhound({
-                        datumTokenizer: Bloodhound.tokenizers.whitespace,
-                        queryTokenizer: Bloodhound.tokenizers.whitespace,
-                        local: users
-                    });
-
-                    // Initializing the typeahead
-                    $('.typeahead').typeahead({
-                        hint: true,
-                        highlight: true,
-                        /* Enable substring highlighting */
-                        minLength: 1 /* Specify minimum characters required for showing result */
-                    }, {
-                        name: 'users',
-                        source: engine
-                    });
-                }
-            };
-            xhttp.open("GET", "http://ibmsvlib01:7800/sys/users", true);
-            xhttp.send();
-
-            $("#searchUser").keyup(function(e) {
-                var username = $("#searchUser").val();
-                var rows = $("#users").find("tr").hide();
-                if (this.value.length) {
-                    var data = this.value.split(" ");
-                    $.each(data, function(i, v) {
-                        rows.filter(":contains('" + username + "')").show();
-                    });
-                } else rows.show();
-
-            });
-
-            $("#searchUser").change(function(e) {
-                var username = $("#searchUser").val();
-                var rows = $("#users").find("tr").hide();
-                if (this.value.length) {
-                    var data = this.value.split(" ");
-                    $.each(data, function(i, v) {
-                        rows.filter(":contains('" + username + "')").show();
-                    });
-                } else rows.show();
-
-            });
-
-        });
-    </script>
-
-    <style type="text/css">
-        .bs-example {
-            font-family: sans-serif;
+		
+        .service-gw {
             position: relative;
-            margin: 100px;
+            margin: 20px;
         }
+		
+		.service-gw td {
+			text-align: center;
+		}
+		
+		.service-gw th {
+			text-align: center;
+		}
         
         .typeahead,
         .tt-query,
@@ -227,22 +154,8 @@
 
 </head>
 
-<style type="text/css">
-    .bs-example {
-        margin: 20px;
-    }
-    
-    .bs-example td {
-        text-align: center;
-    }
-    
-    .bs-example th {
-        text-align: center;
-    }
-</style>
-
 <body>
-    <div class="bs-example">
+    <div class="service-gw">
 
         <nav class="navbar navbar-default">
 
@@ -286,7 +199,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
 
-                <div class="bs-example">
+                <div class="service-gw">
                     <h1>Gestione Utente</h1>
                     <hr>
                     <form id="addUser" class="form-horizontal" action="http://ibmsvlib01:7800/sys/users" method="post">
@@ -303,7 +216,7 @@
 
                     <br>
 
-                    <div class="bs-example">
+                    <div class="service-gw">
                         <h3>Trova utente</h3>
                         <input id="searchUser" type="text" class="typeahead tt-query" autocomplete="off" spellcheck="false">
                     </div>
@@ -312,7 +225,7 @@
                     </div>
                 </div>
 
-                <div class="bs-example">
+                <div class="service-gw">
 
                     <table class="table table-striped">
                         <thead style="max-width: 96%;">
@@ -336,6 +249,91 @@
                 </div>
                 </div>
                 <script>
+					var engine = null;
+					
+					function refreshUsers(){
+						var contact = null;
+						var xhttp = new XMLHttpRequest();
+						xhttp.onreadystatechange = function() {
+							if (this.readyState == 4 && this.status == 200) {
+								// Typical action to be performed when the document is ready:
+								contact = xhttp.responseText;
+								var body = $("#users");
+								body.empty();
+								var users = JSON.parse(contact).map(function(obj) {
+									return obj.USERNAME;
+								});
+								JSON.parse(contact).forEach(function(obj) {
+									body.append('<tr>' +
+										'<td style="vertical-align:middle;">' + obj.ID_USER + '</td>' +
+										'<td style="vertical-align:middle;">' + obj.USERNAME + '</td>' +
+										'<td style="vertical-align:middle;">' + obj.TOKEN + '</td>' +
+										'<td style="vertical-align:middle;">' +
+										'<a href="#" class="material-icons" data-toggle="confirmation" style="font-size:25px;color:red" >delete_sweep</a>' +
+										'</td>' +
+										'<td style="vertical-align:middle;"><a href="#regole"  class="material-icons" data-toggle="modal" style="font-size:25px;" >https</a></td></tr>');
+								});
+								
+                                engine.clear();
+                                engine.local = users;
+                                engine.initialize(true);
+							}
+						};
+						xhttp.open("GET", "http://ibmsvlib01:7800/sys/users", true);
+						xhttp.send();
+					};
+				
+					
+
+					
+					
+					$(document).ready(function(e) {
+						refreshUsers();
+						
+						// Constructing the suggestion engine
+						engine = new Bloodhound({
+							datumTokenizer: Bloodhound.tokenizers.whitespace,
+							queryTokenizer: Bloodhound.tokenizers.whitespace,
+							local: users
+						});
+						
+						// Initializing the typeahead
+						$('.typeahead').typeahead({
+							hint: true,
+							highlight: true,
+							/* Enable substring highlighting */
+							minLength: 1 /* Specify minimum characters required for showing result */
+						}, {
+							name: 'users',
+							source: engine
+						});
+							
+						$("#searchUser").keyup(function(e) {
+							var username = $("#searchUser").val();
+							var rows = $("#users").find("tr").hide();
+							if (this.value.length) {
+								var data = this.value.split(" ");
+								$.each(data, function(i, v) {
+									rows.filter(":contains('" + username + "')").show();
+								});
+							} else rows.show();
+
+						});
+
+						$("#searchUser").change(function(e) {
+							var username = $("#searchUser").val();
+							var rows = $("#users").find("tr").hide();
+							if (this.value.length) {
+								var data = this.value.split(" ");
+								$.each(data, function(i, v) {
+									rows.filter(":contains('" + username + "')").show();
+								});
+							} else rows.show();
+
+						});
+					});
+					
+		
                     $("#addUser").submit(function(e) {
                         e.preventDefault();
                         e.stopImmediatePropagation();
@@ -345,40 +343,7 @@
                             url: $(this).attr('action') + '?username=' + $("#firstName").val(),
                             data: '',
                             success: function(data) {
-
-                                var contact = null;
-                                var xhttp = new XMLHttpRequest();
-                                xhttp.onreadystatechange = function() {
-                                    if (this.readyState == 4 && this.status == 200) {
-                                        // Typical action to be performed when the document is ready:
-                                        contact = xhttp.responseText;
-                                        var body = $("#users");
-                                        body.empty();
-                                        users = JSON.parse(contact).map(function(obj) {
-                                            return obj.USERNAME;
-                                        });
-                                        JSON.parse(contact).forEach(function(obj) {
-                                            body.append('<tr>' +
-                                                '<td style="vertical-align:middle;">' + obj.ID_USER + '</td>' +
-                                                '<td style="vertical-align:middle;">' + obj.USERNAME + '</td>' +
-                                                '<td style="vertical-align:middle;">' + obj.TOKEN + '</td>' +
-                                                '<td style="vertical-align:middle;">' +
-                                                '<div class="row">' +
-                                                '<div class="col-md-12 align-center">' +
-                                                '<a href="#" class="material-icons" data-toggle="confirmation" style="font-size:25px;color:red" >delete_sweep</a>' +
-                                                '</div>' +
-                                                '</div>' +
-                                                '</td>' +
-                                                '<td style="vertical-align:middle;"><div class="row"><div class="col-md-12 align-center"><a href="#regole"  class="material-icons" data-toggle="modal" style="font-size:25px;" >https</a</div></div></td></tr>');
-                                        });
-
-                                        engine.clear();
-                                        engine.local = users;
-                                        engine.initialize(true);
-                                    }
-                                };
-                                xhttp.open("GET", "http://ibmsvlib01:7800/sys/users", true);
-                                xhttp.send();
+                                refreshUsers();
                             }
                         });
 
@@ -399,7 +364,7 @@
                         <h4 class="modal-title">Confirmation</h4>
                     </div>
 
-                    <div class="bs-example">
+                    <div class="service-gw">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -653,7 +618,7 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
 
-                                    <div class="bs-example">
+                                    <div class="service-gw">
 
                                         <div class="span12">
 
@@ -703,6 +668,7 @@
                                             </form>
 											
                                             <script>
+												$.support.cors = true;
                                                 var fileInput = document.getElementById('input05');
 
                                                 var file;
@@ -783,7 +749,7 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
 
-                                    <div class="bs-example">
+                                    <div class="service-gw">
                                         <h1>Parameters</h1>
 										<hr>
                                         <!--form id="upload" role="form" action="http://ibmsvlib01:7800/sys/download_clob?db=INT_ENGINE" enctype="multipart/form-data" method="post"-->
@@ -838,10 +804,10 @@
                                             <div class="form-group">
                                                 <div class="col-xs-offset-3 col-xs-9">
                                                     <input type="submit" class="btn btn-primary" value="Submit">
-                                                    <input type="reset" class="btn btn-default" value="Reset" onclick="myFunction()">
+                                                    <input type="reset" class="btn btn-default" value="Reset" onclick="printMessage()">
 
                                                     <script>
-                                                        function myFunction() {
+                                                        function printMessage() {
                                                             document.getElementById("messaggio").innerHTML = ' <class="alert alert-success alert-dismissable" style="background-color:white; border-color:white">';;
                                                         }
                                                     </script>
@@ -850,6 +816,7 @@
                                             </div>
                                         </form>
                                         <script>
+											$.support.cors = true;
                                             $("#download").submit(function(e) {
 
                                                 var messaggioJson = '{"Parameters": [{ ' + '"nometabella": "' + document.getElementById("nometabella").value + '",' + '"nomechiave": "' + document.getElementById("nomechiave").value + '",' + '"valorechiave": "' + document.getElementById("valorechiave").value + '",' + '"nomefile": "' + document.getElementById("nomefile").value + '",' + '"nomeclob": "' + document.getElementById("nomeclob").value + '",' + '"posizione": "' + document.getElementById("posizione").value + '"' + '}]}';
@@ -996,7 +963,26 @@
                                     popout: !0,
                                     onShow: function(a, b) {},
                                     onHide: function(a, b) {},
-                                    onConfirm: function(a, b) {},
+                                    onConfirm: function(a, b) {
+										//codice gestione cancellazione utente
+										var el = b.parent().parent().children()[0].innerText;
+										alert(b.parent().parent().children()[0].innerText);
+										
+										$.ajax({
+											type: "DELETE",
+											cache: false,
+											url: "http://ibmsvlib01:7800/sys/users/" + b.parent().parent().children()[0].innerText,
+											data: '',
+											success: function(data) {
+												alert('CANCELLATO');
+												refreshUsers();
+											},
+											error: function(data) {
+												alert('UTENTE NON PRESENTE');
+											}
+										});
+										
+									},
                                     onCancel: function(a, b) {},
                                     template: '<div class="popover" style="width:180px"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"><a data-apply="confirmation">Yes</a><a data-dismiss="confirmation">No</a></div></div>'
                                 }), c.prototype = a.extend({}, a.fn.popover.Constructor.prototype), c.prototype.constructor = c, c.prototype.getDefaults = function() {
