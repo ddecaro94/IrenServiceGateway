@@ -232,7 +232,6 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Utente</th>
-                                <th>Token</th>
                                 <th>Delete</th>
                                 <th>Settings</th>
                             </tr>
@@ -278,7 +277,6 @@
 									body.append('<tr>' +
 										'<td style="vertical-align:middle;">' + obj.ID_USER + '</td>' +
 										'<td style="vertical-align:middle;">' + obj.USERNAME + '</td>' +
-										'<td style="vertical-align:middle;">' + obj.TOKEN + '</td>' +
 										'<td style="vertical-align:middle;">' +
 										'<a href="#" class="material-icons" data-toggle="confirmation" style="font-size:25px;color:red" >delete_sweep</a>' +
 										'</td>' +
@@ -304,47 +302,52 @@
 								var permissions = $('#permissions');
 								permissions.empty();
                                 data.forEach(function(obj) {
-									if(obj.ALLOWED == 'YES'){
+									if(obj.ALLOWED == 'BLANK'){
 										permissions.append(
-										'<tr id='+id+'-'+obj.ID_RES+'><td>'+obj.NAME+'</td><td>'+
-												'<div class="row">'+
-													'<div class="col-md-12">'+
+											'<tr id='+id+'-'+obj.ID_RES+'><td>'+obj.NAME+'</td><td>'+
+													'<div class="row">'+
+														'<div class="col-md-12">'+
 
-														'<div class="btn-group btn-toggle pull-right">'+
-															'<button class="btn btn-xs active btn-primary">ON</button>'+
-															'<button class="btn btn-xs btn-default">OFF</button>'+
-														'</div></div></div></td>'+
-										'</tr>');
+															'<div class="btn-group btn-toggle pull-right">'+
+																'<button class="btn btn-xs disabled btn-primary">ON</button>'+
+																'<button class="btn btn-xs disabled btn-default">OFF</button>'+
+															'</div></div></div></td>'+
+											'</tr>');
+									
 									} else {
-										permissions.append(
-										'<tr id='+id+'-'+obj.ID_RES+'><td>'+obj.NAME+'</td><td>'+
-												'<div class="row">'+
-													'<div class="col-md-12">'+
+										if(obj.ALLOWED == 'YES'){
+											permissions.append(
+											'<tr id='+id+'-'+obj.ID_RES+'><td>'+obj.NAME+'</td><td>'+
+													'<div class="row">'+
+														'<div class="col-md-12">'+
 
-														'<div class="btn-group btn-toggle pull-right">'+
-															'<button class="btn btn-xs btn-default">ON</button>'+
-															'<button class="btn btn-xs btn-primary active">OFF</button>'+
-														'</div></div></div></td>'+
-										'</tr>');
-									};
+															'<div class="btn-group btn-toggle pull-right">'+
+																'<button class="btn btn-xs btn-primary active ">ON</button>'+
+																'<button class="btn btn-xs btn-default">OFF</button>'+
+															'</div></div></div></td>'+
+											'</tr>');
+										} else {
+											permissions.append(
+											'<tr id='+id+'-'+obj.ID_RES+'><td>'+obj.NAME+'</td><td>'+
+													'<div class="row">'+
+														'<div class="col-md-12">'+
 
+															'<div class="btn-group btn-toggle pull-right">'+
+																'<button class="btn btn-xs btn-default">ON</button>'+
+																'<button class="btn btn-xs btn-primary active">OFF</button>'+
+															'</div></div></div></td>'+
+											'</tr>');
+										};					
+									}
 								});
 								$('.btn-toggle').click(function() {
-                                    $(this).find('.btn').toggleClass('active');
-                                    if ($(this).find('.btn-primary').size() > 0) {
-                                        $(this).find('.btn').toggleClass('btn-primary');
-                                    }
-                                    if ($(this).find('.btn-danger').size() > 0) {
-                                        $(this).find('.btn').toggleClass('btn-danger');
-                                    }
-                                    if ($(this).find('.btn-success').size() > 0) {
-                                        $(this).find('.btn').toggleClass('btn-success');
-                                    }
-                                    if ($(this).find('.btn-info').size() > 0) {
-                                        $(this).find('.btn').toggleClass('btn-info');
-                                    }
-                                    $(this).find('.btn').toggleClass('btn-default');
-                                });
+									if ($(this).find('.active').size() > 0) {
+										$(this).find('.btn').toggleClass('active');
+										$(this).find('.btn').toggleClass('btn-primary');
+									}
+									
+									$(this).find('.btn').toggleClass('btn-default');
+								});
                             }
                         });
 					};
@@ -352,9 +355,10 @@
 					function postPermissions() {
 						var data = $('#permissions tr').toArray();
 						var id = data[0].id.substring(0,10);
-						var permissions = data.map(function(obj){
+						var permissions = data.filter(function(obj){
+							return($(obj).find('.active')[0].innerText == 'ON');
+						}).map(function(obj){
 							var idRes = obj.id.substring(11, 21);
-							
 							return idRes;
 						});
 						
