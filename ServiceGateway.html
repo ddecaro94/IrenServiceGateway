@@ -257,7 +257,7 @@
 							query[decodeURIComponent(b[0])] = decodeURIComponent(b[1] || '');
 						}
 						return query;
-					}
+					};
 
 					var engine = null;
 					var token = parseQuery(window.location.search).user;
@@ -282,7 +282,7 @@
 										'<td style="vertical-align:middle;">' +
 										'<a href="#" class="material-icons" data-toggle="confirmation" style="font-size:25px;color:red" >delete_sweep</a>' +
 										'</td>' +
-										'<td style="vertical-align:middle;"><a href="#regole"  class="material-icons" data-toggle="modal" style="font-size:25px;" >https</a></td></tr>');
+										'<td style="vertical-align:middle;"><a href="#regole"  class="material-icons" data-toggle="modal" style="font-size:25px;" onclick="loadPermissions($(this).parent().parent().children()[0].innerText)">https</a></td></tr>');
 								});
 								
                                 engine.clear();
@@ -294,6 +294,84 @@
 						xhttp.send();
 					};
 				
+					function loadPermissions(id){
+						$.ajax({
+                            type: "GET",
+                            cache: false,
+                            url: 'http://ibmsvlib01:7800/sys/permissions/'+id+'?user=' + token,
+                            data: '',
+                            success: function(data) {
+								var permissions = $('#permissions');
+								permissions.empty();
+                                data.forEach(function(obj) {
+									if(obj.ALLOWED == 'YES'){
+										permissions.append(
+										'<tr id='+id+'-'+obj.ID_RES+'><td>'+obj.NAME+'</td><td>'+
+												'<div class="row">'+
+													'<div class="col-md-12">'+
+
+														'<div class="btn-group btn-toggle pull-right">'+
+															'<button class="btn btn-xs active btn-primary">ON</button>'+
+															'<button class="btn btn-xs btn-default">OFF</button>'+
+														'</div></div></div></td>'+
+										'</tr>');
+									} else {
+										permissions.append(
+										'<tr id='+id+'-'+obj.ID_RES+'><td>'+obj.NAME+'</td><td>'+
+												'<div class="row">'+
+													'<div class="col-md-12">'+
+
+														'<div class="btn-group btn-toggle pull-right">'+
+															'<button class="btn btn-xs btn-default">ON</button>'+
+															'<button class="btn btn-xs btn-primary active">OFF</button>'+
+														'</div></div></div></td>'+
+										'</tr>');
+									};
+
+								});
+								$('.btn-toggle').click(function() {
+                                    $(this).find('.btn').toggleClass('active');
+                                    if ($(this).find('.btn-primary').size() > 0) {
+                                        $(this).find('.btn').toggleClass('btn-primary');
+                                    }
+                                    if ($(this).find('.btn-danger').size() > 0) {
+                                        $(this).find('.btn').toggleClass('btn-danger');
+                                    }
+                                    if ($(this).find('.btn-success').size() > 0) {
+                                        $(this).find('.btn').toggleClass('btn-success');
+                                    }
+                                    if ($(this).find('.btn-info').size() > 0) {
+                                        $(this).find('.btn').toggleClass('btn-info');
+                                    }
+                                    $(this).find('.btn').toggleClass('btn-default');
+                                });
+                            }
+                        });
+					};
+					
+					function postPermissions() {
+						var data = $('#permissions tr').toArray();
+						var id = data[0].id.substring(0,10);
+						var permissions = data.map(function(obj){
+							var idRes = obj.id.substring(11, 21);
+							
+							return idRes;
+						});
+						
+						
+						$.ajax({
+                            type: "POST",
+                            cache: false,
+                            url: 'http://ibmsvlib01:7800/sys/permissions/'+id+'?user=' + token,
+                            data: JSON.stringify(permissions),
+                            success: function(data) {
+								alert('SAVED SUCCESSFULLY');
+                            },
+							error: function(e){
+								alert(e.status+' '+e.statusText);
+							}
+                        });
+					};
 					
 
 					
@@ -384,11 +462,9 @@
                                     <th class="pull-right">Grant</th>
                                 </tr>
                             </thead>
-                            <tbody class="scrollable-tbody">
+                            <tbody id="permissions" class="scrollable-tbody">
                                 <tr>
-                                    <td>NomeServizio
-                                        <div class="col-md-12">
-                                    </td>
+                                    <td>NomeServizio</td>
 
                                     <td>
                                         <div class="row">
@@ -403,9 +479,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>NomeServizio
-                                        <div class="col-md-12">
-                                    </td>
+                                    <td>NomeServizio</td>
 
                                     <td>
                                         <div class="row">
@@ -420,9 +494,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>NomeServizio
-                                        <div class="col-md-12">
-                                    </td>
+                                    <td>NomeServizio</td>
 
                                     <td>
                                         <div class="row">
@@ -435,179 +507,6 @@
                                             </div>
                                         </div>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>NomeServizio
-                                        <div class="col-md-12">
-                                    </td>
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-md-12">
-
-                                                <div class="btn-group btn-toggle pull-right">
-                                                    <button class="btn btn-xs btn-default">ON</button>
-                                                    <button class="btn btn-xs btn-primary active">OFF</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>NomeServizio
-                                        <div class="col-md-12">
-                                    </td>
-
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-md-12">
-
-                                                <div class="btn-group btn-toggle pull-right">
-                                                    <button class="btn btn-xs btn-default">ON</button>
-                                                    <button class="btn btn-xs btn-primary active">OFF</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>NomeServizio
-                                        <div class="col-md-12">
-                                    </td>
-
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-md-12">
-
-                                                <div class="btn-group btn-toggle pull-right">
-                                                    <button class="btn btn-xs btn-default">ON</button>
-                                                    <button class="btn btn-xs btn-primary active">OFF</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>NomeServizio
-                                        <div class="col-md-12">
-                                    </td>
-
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-md-12">
-
-                                                <div class="btn-group btn-toggle pull-right">
-                                                    <button class="btn btn-xs btn-default">ON</button>
-                                                    <button class="btn btn-xs btn-primary active">OFF</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>NomeServizio
-                                        <div class="col-md-12">
-                                    </td>
-
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-md-12">
-
-                                                <div class="btn-group btn-toggle pull-right">
-                                                    <button class="btn btn-xs btn-default">ON</button>
-                                                    <button class="btn btn-xs btn-primary active">OFF</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>NomeServizio
-                                        <div class="col-md-12">
-                                    </td>
-
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-md-12">
-
-                                                <div class="btn-group btn-toggle pull-right">
-                                                    <button class="btn btn-xs btn-default">ON</button>
-                                                    <button class="btn btn-xs btn-primary active">OFF</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>NomeServizio
-                                        <div class="col-md-12">
-                                    </td>
-
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-md-12">
-
-                                                <div class="btn-group btn-toggle pull-right">
-                                                    <button class="btn btn-xs btn-default">ON</button>
-                                                    <button class="btn btn-xs btn-primary active">OFF</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>NomeServizio
-                                        <div class="col-md-12">
-                                    </td>
-
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-md-12">
-
-                                                <div class="btn-group btn-toggle pull-right">
-                                                    <button class="btn btn-xs btn-default">ON</button>
-                                                    <button class="btn btn-xs btn-primary active">OFF</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>NomeServizio
-                                        <div class="col-md-12">
-                                    </td>
-
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-md-12">
-
-                                                <div class="btn-group btn-toggle pull-right">
-                                                    <button class="btn btn-xs btn-default">ON</button>
-                                                    <button class="btn btn-xs btn-primary active">OFF</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                </tr>
-
-                                <tr>
-                                    <td>NomeServizio
-                                        <div class="col-md-12">
-                                    </td>
-
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-md-12">
-
-                                                <div class="btn-group btn-toggle pull-right">
-                                                    <button class="btn btn-xs btn-default">ON</button>
-                                                    <button class="btn btn-xs btn-primary active">OFF</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-
                                 </tr>
 
                             </tbody>
@@ -616,7 +515,7 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-primary" onclick="postPermissions()">Save changes</button>
                         </div>
                         </div>
                         </div>
@@ -1063,28 +962,7 @@
 
                         <div>
 
-                            <script type="text/javascript">
-                                $('.btn-toggle').click(function() {
-                                    $(this).find('.btn').toggleClass('active');
-                                    if ($(this).find('.btn-primary').size() > 0) {
-                                        $(this).find('.btn').toggleClass('btn-primary');
-                                    }
-                                    if ($(this).find('.btn-danger').size() > 0) {
-                                        $(this).find('.btn').toggleClass('btn-danger');
-                                    }
-                                    if ($(this).find('.btn-success').size() > 0) {
-                                        $(this).find('.btn').toggleClass('btn-success');
-                                    }
-                                    if ($(this).find('.btn-info').size() > 0) {
-                                        $(this).find('.btn').toggleClass('btn-info');
-                                    }
-                                    $(this).find('.btn').toggleClass('btn-default');
-                                });
-                                $('form').submit(function() {
-                                    alert($(this["options"]).val());
-                                    return false;
-                                });
-                            </script>
+
 
                             <script type="text/javascript">
                                 $('#input05').filestyle({
