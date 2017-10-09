@@ -194,7 +194,6 @@
         </div>
     </div>
 
-    <!-- Modal HTML -->
     <div id="actionA" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -467,51 +466,6 @@
                                 </tr>
                             </thead>
                             <tbody id="permissions" class="scrollable-tbody">
-                                <tr>
-                                    <td>NomeServizio</td>
-
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-md-12">
-
-                                                <div class="btn-group btn-toggle pull-right">
-                                                    <button class="btn btn-xs btn-default">ON</button>
-                                                    <button class="btn btn-xs btn-primary active">OFF</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>NomeServizio</td>
-
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-md-12">
-
-                                                <div class="btn-group btn-toggle pull-right">
-                                                    <button class="btn btn-xs btn-default">ON</button>
-                                                    <button class="btn btn-xs btn-primary active">OFF</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>NomeServizio</td>
-
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-md-12">
-
-                                                <div class="btn-group btn-toggle pull-right">
-                                                    <button class="btn btn-xs btn-default">ON</button>
-                                                    <button class="btn btn-xs btn-primary active">OFF</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
 
                             </tbody>
                         </table>
@@ -791,28 +745,6 @@
 
                         </div>
 
-                        <div class="modal fade">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title">Confirmation</h4>
-                                    </div>
-
-                                    <div class="modal-body">
-                                        <p>Do you want to save changes you made to document before closing?</p>
-                                        <p class="text-warning"><small>If you don't save, your changes will be lost.</small></p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Modal HTML -->
-
                         <script>
                             $(function() {
                                 $('body').confirmation({
@@ -831,10 +763,6 @@
                         </script>
 
                         <script>
-                            /*!
-                             * Bootstrap Confirmation v1.0.5
-                             * https://github.com/tavicu/bs-confirmation
-                             */
                             + function(a) {
                                 "use strict";
                                 var b = !1,
@@ -884,7 +812,7 @@
 										$.ajax({
 											type: "DELETE",
 											cache: false,
-											url: "http://ibmsvlib01:7800/sys/users/" + b.parent().parent().children()[0].innerText,
+											url: "/sys/users/" + b.parent().parent().children()[0].innerText,
 											data: '',
 											success: function(data) {
 												alert('CANCELLATO');
@@ -964,15 +892,11 @@
                             }(jQuery);
                         </script>
 
-                        <div>
-
-
-
-                            <script type="text/javascript">
-                                $('#input05').filestyle({
-                                    buttonName: 'btn-warning'
-                                });
-                            </script>
+					<script type="text/javascript">
+						$('#input05').filestyle({
+							buttonName: 'btn-warning'
+						});
+					</script>
 
 </body>
 
