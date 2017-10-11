@@ -1,0 +1,131 @@
+                        <div id="RecuperoIvaCessatiDownload" class="modal fade">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                    <div class="service-gw">
+                                        <h1>Parameters</h1>
+										<hr>
+                                        <!--form id="upload" role="form" action="http://ibmsvlib01:7800/sys/download_clob?db=INT_ENGINE" enctype="multipart/form-data" method="post"-->
+                                        <form id="download" class="form-horizontal" action="http://ibmsvlib01:7800/sys/download_clob?db=INT_ENGINE" enctype="multipart/form-data" method="post">
+                                            <div class="form-group">
+                                                <label class="control-label col-xs-3" for="nometabella">nometabella:</label>
+                                                <div class="col-xs-9">
+                                                    <input type="text" class="form-control" id="nometabella" placeholder="nometabella" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-xs-3" for="nomechiave">nomechiave:</label>
+                                                <div class="col-xs-9">
+                                                    <input type="text" class="form-control" id="nomechiave" placeholder="nomechiave" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-xs-3" for="valorechiave">valorechiave:</label>
+                                                <div class="col-xs-9">
+                                                    <input type="text" class="form-control" id="valorechiave" placeholder="valorechiave" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-xs-3" for="nomefile">nomefile:</label>
+                                                <div class="col-xs-9">
+                                                    <input type="text" class="form-control" id="nomefile" placeholder="nomefile" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-xs-3" for="nomeclob">nomeclob:</label>
+                                                <div class="col-xs-9">
+                                                    <input type="text" class="form-control" id="nomeclob" placeholder="nomeclob" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-xs-3" for="posizione">posizione:</label>
+                                                <div class="col-xs-9">
+                                                    <input type="text" class="form-control" id="posizione" placeholder="posizione" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-12">
+                                                <p id="messaggio"> </p>
+                                            </div>
+
+                                            <br>
+                                            <div class="form-group">
+                                                <div class="col-xs-offset-3 col-xs-9">
+                                                    <input type="submit" class="btn btn-primary" value="Submit">
+                                                    <input type="reset" class="btn btn-default" value="Reset" onclick="printMessage()">
+
+                                                    <script>
+                                                        function printMessage() {
+                                                            document.getElementById("messaggio").innerHTML = ' <class="alert alert-success alert-dismissable" style="background-color:white; border-color:white">';;
+                                                        }
+                                                    </script>
+
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <script>
+											$.support.cors = true;
+                                            $("#download").submit(function(e) {
+
+                                                var messaggioJson = '{"Parameters": [{ ' + '"nometabella": "' + document.getElementById("nometabella").value + '",' + '"nomechiave": "' + document.getElementById("nomechiave").value + '",' + '"valorechiave": "' + document.getElementById("valorechiave").value + '",' + '"nomefile": "' + document.getElementById("nomefile").value + '",' + '"nomeclob": "' + document.getElementById("nomeclob").value + '",' + '"posizione": "' + document.getElementById("posizione").value + '"' + '}]}';
+
+                                                //document.getElementById("messaggio").innerHTML = messaggioJson;
+
+                                                e.preventDefault();
+                                                e.stopImmediatePropagation();
+                                                $.ajax({
+                                                    type: "POST",
+                                                    cache: false,
+                                                    url: $(this).attr('action'),
+                                                    data: messaggioJson,
+                                                    dataType: 'json',
+                                                    success: function(data) {
+
+                                                        var messaggio = '';
+
+                                                        var text = JSON.stringify(data);
+
+                                                        <!--document.getElementById("demo").innerHTML = data.info.status; -->
+
+                                                        if (data.info.status == true) {
+
+                                                            // messaggio = messaggio + ' <div class="alert alert-success alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> <a href="P:\">'+ data.info.description +' </div>';	
+                                                            messaggio = messaggio + ' <div class="alert alert-success">  <strong>Success!</strong><a href="P:\">' + data.info.description + ' </div>';
+
+                                                            document.getElementById("messaggio").innerHTML = messaggio;
+                                                        } else {
+                                                            //messaggio = messaggio +'<div class="alert alert-danger alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a><strong>Danger!</strong>'+  data.info.description +' </div>';
+                                                            messaggio = messaggio + ' <div class="alert alert-danger">  <strong>Errore!</strong><a href="P:\">' + data.info.description + ' </div>';
+
+                                                            document.getElementById("messaggio").innerHTML = messaggio;
+                                                        }
+
+                                                    },
+                                                    error: function(jqXHR, textStatus, errorThrown) {
+                                                        var messaggio = '';
+                                                        messaggio = messaggio + ' <div class="alert alert-danger">  <strong>Errore!</strong> ' + textStatus + ' - ' + errorThrown + ' </div>';
+
+                                                        document.getElementById("messaggio").innerHTML = messaggio;
+                                                    }
+                                                });
+
+                                            });
+                                        </script>
+
+                                        <div class="modal-footer">
+
+                                            <img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png"></img>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
