@@ -182,7 +182,7 @@
 
 </head>
 
-<body>
+<body id="body">
     <div class="service-gw">
 		<header class="header"></header>
 
@@ -233,7 +233,12 @@
 								data: '',
 								dataType: 'json',
 								success: function(data) {
-										$('#navbarCollapse').append('<ul class="nav navbar-nav navbar-right"><li class="nav-item"><a>'+data[0].USERNAME+' </a></li><li><img class="navbar-brand" style="padding:2px" src="http://ibmsvlib01:7800/sys/download?filename=/html/Irenicons/user-icon2.png"></li></ul>');
+										var username = '';
+										if(data[0] !== undefined){
+											username= data[0].USERNAME;
+										}
+										
+										$('#navbarCollapse').append('<ul class="nav navbar-nav navbar-right"><li class="nav-item"><a>'+username+' </a></li><li><img class="navbar-brand" style="padding:2px" src="http://ibmsvlib01:7800/sys/download?filename=/html/Irenicons/user-icon2.png"></li></ul>');
 								}
 							});
 							
@@ -258,7 +263,7 @@
 												data: '',
 												dataType: 'html',
 												success: function(data) {
-													$('body').append(data);
+													$('#body').append(data);
 												}
 											});
 							
