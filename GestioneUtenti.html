@@ -5,7 +5,7 @@
                 <div class="service-gw">
                     <h1>Gestione Utente</h1>
                     <hr>
-                    <form id="addUser" class="form-horizontal" action="http://ibmsvlib01:7800/sys/users" method="post">
+                    <form id="addUser" class="form-horizontal" action="/sys/users" method="post">
                         <div class="form-group">
                             <div class="col-lg-9">
                                 <input type="text" class="form-control" id="firstName" placeholder="Crea nuovo utente" required>
@@ -82,7 +82,7 @@
                                 engine.initialize(true);
 							}
 						};
-						xhttp.open("GET", "http://ibmsvlib01:7800/sys/users", true);
+						xhttp.open("GET", "/sys/users", true);
 						xhttp.send();
 					};
 				
@@ -90,7 +90,7 @@
 						$.ajax({
                             type: "GET",
                             cache: false,
-                            url: 'http://ibmsvlib01:7800/sys/permissions/'+id+'?user=' + token,
+                            url: '/sys/permissions/'+id+'?user=' + token,
                             data: '',
                             success: function(data) {
 								var permissions = $('#permissions');
@@ -160,7 +160,7 @@
 						$.ajax({
                             type: "POST",
                             cache: false,
-                            url: 'http://ibmsvlib01:7800/sys/permissions/'+id+'?user=' + token,
+                            url: '/sys/permissions/'+id+'?user=' + token,
                             data: JSON.stringify(permissions),
                             success: function(data) {
 								alert('SAVED SUCCESSFULLY');
@@ -323,7 +323,7 @@
 										$.ajax({
 											type: "DELETE",
 											cache: false,
-											url: "http://ibmsvlib01:7800/sys/users/" + b.parent().parent().children()[0].innerText,
+											url: "/sys/users/" + b.parent().parent().children()[0].innerText,
 											data: '',
 											success: function(data) {
 												alert('CANCELLATO');

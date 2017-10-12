@@ -55,9 +55,9 @@
         }
     </style>
 
-    <script type="text/javascript" src="http://ibmsvlib01:7800/sys/download?filename=/scripts/bootstrap-filestyle.js"></script>
+    <script type="text/javascript" src="/sys/download?filename=/scripts/bootstrap-filestyle.js"></script>
 
-    <script type="text/javascript" src="http://ibmsvlib01:7800/sys/download?filename=/scripts/typeahead.js"></script>
+    <script type="text/javascript" src="/sys/download?filename=/scripts/typeahead.js"></script>
 
 	 <script>
 				function parseQuery(qstr) {
@@ -216,11 +216,11 @@
 								
 								
 								<div class="row-3">
-											<div class="item col-md-2 col-sm-2 col-md-offset-1"><figure><img src="http://ibmsvlib01:7800/sys/download?filename=/html/Irenicons/btn_menu_luce.png"></figure></div>
-											<div class="item col-md-2 col-sm-2"><figure><img src="http://ibmsvlib01:7800/sys/download?filename=/html/Irenicons/btn_menu_gas.png"></figure></div>
-											<div class="item col-md-2 col-sm-2"><figure><img src="http://ibmsvlib01:7800/sys/download?filename=/html/Irenicons/btn_menu_servizi.png"></figure></div>
-											<div class="item col-md-2 col-sm-2"><figure><img src="http://ibmsvlib01:7800/sys/download?filename=/html/Irenicons/btn_menu_ambiente.png"></figure></div>
-											<div class="item col-md-2 col-sm-2"><figure><img src="http://ibmsvlib01:7800/sys/download?filename=/html/Irenicons/btn_menu_acqua.png"></figure></div>          
+											<div class="item col-md-2 col-sm-2 col-md-offset-1"><figure><img src="/sys/download?filename=/html/Irenicons/btn_menu_luce.png"></figure></div>
+											<div class="item col-md-2 col-sm-2"><figure><img src="/sys/download?filename=/html/Irenicons/btn_menu_gas.png"></figure></div>
+											<div class="item col-md-2 col-sm-2"><figure><img src="/sys/download?filename=/html/Irenicons/btn_menu_servizi.png"></figure></div>
+											<div class="item col-md-2 col-sm-2"><figure><img src="/sys/download?filename=/html/Irenicons/btn_menu_ambiente.png"></figure></div>
+											<div class="item col-md-2 col-sm-2"><figure><img src="/sys/download?filename=/html/Irenicons/btn_menu_acqua.png"></figure></div>          
 							 </div></div>
 						</div>
 						<script>
@@ -229,7 +229,7 @@
 							$.ajax({
 								type: "GET",
 								cache: false,
-								url: 'http://ibmsvlib01:7800/sys/users?user=' + token,
+								url: '/sys/users?user=' + token,
 								data: '',
 								dataType: 'json',
 								success: function(data) {
@@ -238,14 +238,14 @@
 											username= data[0].USERNAME;
 										}
 										
-										$('#navbarCollapse').append('<ul class="nav navbar-nav navbar-right"><li class="nav-item"><a>'+username+' </a></li><li><img class="navbar-brand" style="padding:2px" src="http://ibmsvlib01:7800/sys/download?filename=/html/Irenicons/user-icon2.png"></li></ul>');
+										$('#navbarCollapse').append('<ul class="nav navbar-nav navbar-right"><li class="nav-item"><a>'+username+' </a></li><li><img class="navbar-brand" style="padding:2px" src="/sys/download?filename=/html/Irenicons/user-icon2.png"></li></ul>');
 								}
 							});
 							
 							$.ajax({
 								type: "GET",
 								cache: false,
-								url: 'http://ibmsvlib01:7800/sys/resources?user=' + token,
+								url: '/sys/resources?user=' + token,
 								data: '',
 								dataType: 'json',
 								success: function(data) {
