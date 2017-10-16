@@ -29,8 +29,8 @@
 						<tr>
 							<th>Id</th>
 							<th>Utente</th>
-							<th>Delete</th>
-							<th>Settings</th>
+							<th>Elimina</th>
+							<th>Permessi</th>
 						</tr>
 					</thead>
 					<tbody id="users" class="scrollable-tbody">
@@ -40,7 +40,7 @@
 				<br>
 				<div class="modal-footer">
 					<img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
 				</div>
 			</div>
 		</div>
@@ -50,14 +50,14 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">Confirmation</h4>
+					<h4 class="modal-title">Permessi utente</h4>
 				</div>
 				<div class="service-gw">
 					<table class="table table-striped">
-						<thead>
+						<thead style="max-width:94%">
 							<tr>
 								<th>Servizio</th>
-								<th class="pull-right">Grant</th>
+								<th>Abilitato</th>
 							</tr>
 						</thead>
 						<tbody id="permissions" class="scrollable-tbody">
@@ -66,8 +66,8 @@
 					<div id="permissions-message"></div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" onclick="postPermissions()">Save changes</button>
+					<button type="button" class="btn btn-default" data-target="#regole" onclick="$('#regole').modal('hide');">Chiudi</button>
+					<button type="button" class="btn btn-primary" onclick="postPermissions()">Salva</button>
 				</div>
 			</div>
 		</div>
@@ -265,37 +265,31 @@
 						if(obj.ALLOWED == 'BLANK'){
 							permissions.append(
 								'<tr id='+id+'-'+obj.ID_RES+'><td>'+obj.NAME+'</td><td>'+
-										'<div class="row">'+
-											'<div class="col-md-12">'+
 		
-												'<div class="btn-group btn-toggle pull-right">'+
+												'<div class="btn-group btn-toggle">'+
 													'<button class="btn btn-xs disabled btn-primary">ON</button>'+
 													'<button class="btn btn-xs disabled btn-default">OFF</button>'+
-												'</div></div></div></td>'+
+												'</div></td>'+
 								'</tr>');
 						
 						} else {
 							if(obj.ALLOWED == 'YES'){
 								permissions.append(
 								'<tr id='+id+'-'+obj.ID_RES+'><td>'+obj.NAME+'</td><td>'+
-										'<div class="row">'+
-											'<div class="col-md-12">'+
 		
-												'<div class="btn-group btn-toggle pull-right">'+
+												'<div class="btn-group btn-toggle">'+
 													'<button class="btn btn-xs btn-primary active ">ON</button>'+
 													'<button class="btn btn-xs btn-default">OFF</button>'+
-												'</div></div></div></td>'+
+												'</div></td>'+
 								'</tr>');
 							} else {
 								permissions.append(
 								'<tr id='+id+'-'+obj.ID_RES+'><td>'+obj.NAME+'</td><td>'+
-										'<div class="row">'+
-											'<div class="col-md-12">'+
 		
-												'<div class="btn-group btn-toggle pull-right">'+
+												'<div class="btn-group btn-toggle">'+
 													'<button class="btn btn-xs btn-default">ON</button>'+
 													'<button class="btn btn-xs btn-primary active">OFF</button>'+
-												'</div></div></div></td>'+
+												'</div></td>'+
 								'</tr>');
 							};					
 						}
