@@ -31,7 +31,7 @@
                                             <div class="form-group">                                              
                                                 <div class="col-xs-12">
                                                     <label class="control-label" for="idlancio">Id Lancio:</label>
-													<input type="text" class="form-control" id="idlancio" placeholder="idlancio" required="">
+													<input type="number" class="form-control" id="idlancio" placeholder="idlancio" required="">
                                                 </div>
                                             </div>
 
@@ -48,9 +48,7 @@
 											
                                             <br>
 											
-											 <div class="col-xs-12">
-                                                <p id="ProcessiContabilitaMessage"> </p>
-                                            </div>
+											<div id="ProcessiContabilitaMessage"></div>
 											
 											
 											
@@ -59,10 +57,10 @@
                                             <div class="form-group">
                                                 <div class="col-xs-offset-3 col-xs-9">
                                                     <input type="submit" class="btn btn-primary" value="Submit" >
-                                                    <input type="reset" class="btn btn-default" value="Reset" onclick="printMessageContabilita();">
+                                                    <input type="reset" class="btn btn-default" value="Reset" onclick="resetProcessiContabilitaMessage()">
 													
 													<script>
-														function printMessageContabilita() {
+														function resetProcessiContabilitaMessage() {
 														 
 														 
 														
@@ -71,7 +69,7 @@
 														alert(messaggioXml);
 														
 														
-														$("#ProcessiContabilitaMessage").text() = '';
+														$('#ProcessiContabilitaMessage').replaceWith('<div id="ProcessiContabilitaMessage"></div>');
 
 														}
 												    </script>
@@ -100,9 +98,10 @@
                                                     success: function(data) {
 														debugger;
                                                         var messaggio = '';
-                                                            messaggio = messaggio + ' <div class="alert alert-success">  <strong>Success!</strong><a href="P:\">' + data.firstChild.firstChild.textContent + ' </div>';
+                                                            messaggio = messaggio + ' <div class="alert alert-success">  <strong>Success!</strong>' + data.firstChild.firstChild.textContent + ' </div>';
 
                                                             document.getElementById("ProcessiContabilitaMessage").innerHTML = messaggio;
+															$('#ProcessiContabilitaMessage').replaceWith('<div id="ProcessiContabilitaMessage" class="alert alert-info"><strong>Info - </strong>' + data.firstChild.firstChild.textContent + '</div>');
                                                         } 
 														
 													 });	
