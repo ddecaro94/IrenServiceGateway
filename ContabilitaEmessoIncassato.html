@@ -9,14 +9,11 @@
 				
 				 
 				<form id="contabilita-emesso-incassato" class="form-horizontal" action="/corporate/contabilita/start?" enctype="multipart/form-data" method="post">
-				 
-										                                                    
-                                              
 
 										    <div class="form-group"> 										  
 												<div class="col-xs-12">
 													 <label class="control-label" for="sistema">Sistema</label>
-													 <select class="form-control" id="sistema">
+													 <select class="form-control" id="sistema" required>
 														<option value=""></option>
 														<option value="C1">IME - C1-CNRG MAGGIOR TUTELA</option>
 														<option value="C2">IME - C2-CNRG MERCATO LIBERO2</option>
@@ -38,7 +35,7 @@
 											<div class="form-group"> 										  
 											  <div class="col-xs-12">
 													 <label class="control-label" for="tipoflusso">Tipo Flusso</label>
-											         <select class="form-control" id="tipoflusso">
+											         <select class="form-control" id="tipoflusso" required>
 														<option value=""></option>
 														<option value="E">EMESSO</option>
 														<option value="I">INCASSATO</option>
@@ -61,15 +58,10 @@
 													
 													<script>
 														function resetContabilitaEmessoIncassatoMessage() {
-														 
-														 
 														
-																												
-														var messaggioXml   = 'societa='+document.getElementById("sistema").options[document.getElementById("sistema").selectedIndex].value+'&idLancio='+document.getElementById("idlancio").value+'&tipoFlusso='+document.getElementById("tipoflusso").options[document.getElementById("tipoflusso").selectedIndex].value;
-														alert(messaggioXml);
-														
-														
-														$('#ProcessiContabilitaMessage').replaceWith('<div id="ProcessiContabilitaMessage"></div>');
+															var messaggioXml   = 'societa='+document.getElementById("sistema").options[document.getElementById("sistema").selectedIndex].value+'&idLancio='+document.getElementById("idlancio").value+'&tipoFlusso='+document.getElementById("tipoflusso").options[document.getElementById("tipoflusso").selectedIndex].value;
+															alert(messaggioXml);
+															$('#ContabilitaEmessoIncassatoMessage').replaceWith('<div id="ContabilitaEmessoIncassatoMessage"></div>');
 
 														}
 												    </script>
@@ -96,18 +88,20 @@
                                                     data: '',
                                                     dataType: 'xml',
                                                     success: function(data) {
-														debugger;
-                                                        var messaggio = '';
-                                                            messaggio = messaggio + ' <div class="alert alert-success">  <strong>Success!</strong>' + data.firstChild.firstChild.textContent + ' </div>';
-
-                                                            document.getElementById("ProcessiContabilitaMessage").innerHTML = messaggio;
-															$('#ProcessiContabilitaMessage').replaceWith('<div id="ProcessiContabilitaMessage" class="alert alert-info"><strong>Info - </strong>' + data.firstChild.firstChild.textContent + '</div>');
-                                                        } 
+														$('#ContabilitaEmessoIncassatoMessage').replaceWith('<div id="ContabilitaEmessoIncassatoMessage" class="alert alert-info"><strong>Info - </strong>' + data.firstChild.firstChild.textContent + '</div>');
 														
-													 });	
+													} 
+														
+												});	
 												
  
                                             });
+											$(document).ready(function(e){
+												$("#ContabilitaEmessoIncassato").on("hidden.bs.modal", function(){
+													document.getElementById("contabilita-emesso-incassato").reset();
+													resetContabilitaEmessoIncassatoMessage();
+												});
+											});
                                         </script>
 										
 										
