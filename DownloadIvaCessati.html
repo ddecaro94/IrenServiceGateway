@@ -7,44 +7,44 @@
                                         <!--form id="upload" role="form" action="/sys/download_clob?db=INT_ENGINE" enctype="multipart/form-data" method="post"-->
                                         <form id="download" class="form-horizontal" action="/sys/download_clob?db=INT_ENGINE" enctype="multipart/form-data" method="post">
                                             <div class="form-group">
-                                                <label class="control-label col-xs-3" for="nometabella">nometabella:</label>
-                                                <div class="col-xs-9">
-                                                    <input type="text" class="form-control" id="nometabella" placeholder="nometabella" required>
+                                                <div class="col-xs-12">
+													<label class="control-label" for="nometabella">Tabella</label>
+                                                    <input type="text" class="form-control" id="nometabella" placeholder="Nome della tabella" required>
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
-                                                <label class="control-label col-xs-3" for="nomechiave">nomechiave:</label>
-                                                <div class="col-xs-9">
-                                                    <input type="text" class="form-control" id="nomechiave" placeholder="nomechiave" required>
+                                                <div class="col-xs-12">
+													<label class="control-label" for="nomechiave">Chiave</label>
+                                                    <input type="text" class="form-control" id="nomechiave" placeholder="Nome della colonna chiave della tabella" required>
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
-                                                <label class="control-label col-xs-3" for="valorechiave">valorechiave:</label>
-                                                <div class="col-xs-9">
-                                                    <input type="text" class="form-control" id="valorechiave" placeholder="valorechiave" required>
+                                                <div class="col-xs-12">
+													<label class="control-label" for="valorechiave">Valore Chiave</label>
+                                                    <input type="text" class="form-control" id="valorechiave" placeholder="Valore del campo chiave" required>
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
-                                                <label class="control-label col-xs-3" for="nomefile">nomefile:</label>
-                                                <div class="col-xs-9">
-                                                    <input type="text" class="form-control" id="nomefile" placeholder="nomefile" required>
+                                                <div class="col-xs-12">
+													<label class="control-label" for="nomefile">Nome File</label>
+                                                    <input type="text" class="form-control" id="nomefile" placeholder="Nome del file da scaricare" required>
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
-                                                <label class="control-label col-xs-3" for="nomeclob">nomeclob:</label>
-                                                <div class="col-xs-9">
-                                                    <input type="text" class="form-control" id="nomeclob" placeholder="nomeclob" required>
+                                                <div class="col-xs-12">
+													<label class="control-label" for="nomeclob">Nome Colonna CLOB</label>
+                                                    <input type="text" class="form-control" id="nomeclob" placeholder="Nome colonna Clob sulla tabella" required>
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
-                                                <label class="control-label col-xs-3" for="posizione">posizione:</label>
-                                                <div class="col-xs-9">
-                                                    <input type="text" class="form-control" id="posizione" placeholder="posizione" required>
+                                                <div class="col-xs-12">
+													<label class="control-label" for="posizione">Posizione</label>
+                                                    <input type="text" class="form-control" id="posizione" placeholder="Percorso di salvataggio file" required>
                                                 </div>
                                             </div>
 
@@ -54,13 +54,13 @@
 
                                             <br>
                                             <div class="form-group">
-                                                <div class="col-xs-offset-3 col-xs-9">
+                                                <div class="col-xs-offset-3 col-xs-12">
                                                     <input type="submit" class="btn btn-primary" value="Submit">
                                                     <input type="reset" class="btn btn-default" value="Reset" onclick="printMessage()">
 
                                                     <script>
                                                         function printMessage() {
-                                                            document.getElementById("messaggio").innerHTML = ' <class="alert alert-success alert-dismissable" style="background-color:white; border-color:white">';;
+                                                            document.getElementById("messaggio").innerHTML = ' <class="alert alert-success alert-dismissable" style="background-color:white; border-color:white">';
                                                         }
                                                     </script>
 

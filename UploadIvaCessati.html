@@ -65,22 +65,13 @@
                                                     file = fileInput.files[0];
                                                     if (file.type.match(textType)) {
                                                         reader = new FileReader();
-
-                                                        reader.onload = function(e) {
-                                                            fileDisplayArea.innerText = reader.result;
-                                                            document.getElementById("demo1").innerHTML = ' <class="alert alert-success alert-dismissable" style="background-color:white; border-color:white">';
-
-                                                        }
-
                                                         reader.readAsText(file);
                                                     } else {
-                                                        fileDisplayArea.innerText = "File not supported!";
+                                                        $('#demo1').text = "File not supported!";
                                                     }
                                                 });
 
                                                 $("#upload").submit(function(e) {
-
-                                                    /*fileDisplayArea.innerText = reader.result;*/
 
                                                     e.preventDefault();
                                                     e.stopImmediatePropagation();

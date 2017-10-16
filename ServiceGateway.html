@@ -178,6 +178,9 @@
 		  vertical-align: middle;
 		  display: table-cell;
 		}
+		.form-horizontal .form-control {
+			margin: 5px 0px;
+		}
     </style>
 
 </head>
@@ -263,7 +266,7 @@
 												data: '',
 												dataType: 'html',
 												success: function(data) {
-													$(document.body).append(data);
+													$(body).append(data);
 												}
 											});
 							
