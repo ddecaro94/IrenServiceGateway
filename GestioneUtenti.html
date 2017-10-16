@@ -6,17 +6,17 @@
 				<hr>
 				<form id="addUser" class="form-horizontal" action="/sys/users" method="post">
 					<div class="form-group">
-						<div class="col-lg-9">
+						<div class="col-md-9">
 							<input type="text" class="form-control" id="firstName" placeholder="Crea nuovo utente" required>
 						</div>
-						<div class="col-sm-3 pull-right">
-							<input type="submit" class="btn btn-primary" value="Crea">
+						<div class="col-md-3">
+							<input type="submit" class="btn btn-primary form-control" value="Crea">
 						</div>
 					</div>
 				</form>
 				<br>
 				<div class="service-gw" style="margin-left: 0px;">
-					<h3>Trova utente</h3>
+					<h3>Filtra utenti</h3>
 					<input id="searchUser" type="text" class="typeahead tt-query" autocomplete="off" spellcheck="false">
 				</div>
 				<div class="form-group">
@@ -219,7 +219,6 @@
 	<script>
 		var engine = null;
 		var token = parseQuery(window.location.search).user;
-		debugger;
 		
 		function refreshUsers(){
 			var contact = null;
@@ -323,7 +322,6 @@
 		                       url: '/sys/permissions/'+id+'?user=' + token,
 		                       data: JSON.stringify(permissions),
 		                       success: function(data) {
-					debugger;
 					$('#permissions-message').replaceWith('<div id="permissions-message" class="alert alert-success">  <strong>Salvato</strong> Abilitazioni salvate con successo.</div>');
 		                       },
 				error: function(e){

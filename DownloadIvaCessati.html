@@ -4,8 +4,8 @@
 			<div class="service-gw">
 				<h1>Parameters</h1>
 				<hr>
-				<!--form id="upload" role="form" action="/sys/download_clob?db=INT_ENGINE" enctype="multipart/form-data" method="post"-->
-				<form id="download" class="form-horizontal" action="/sys/download_clob?db=INT_ENGINE" enctype="multipart/form-data" method="post">
+				
+				<form id="download" class="form-horizontal" action="/sys/download_clob" enctype="multipart/form-data" method="post">
 					<div class="form-group">
 						<div class="col-xs-12">
 							<label class="control-label" for="nometabella">Tabella</label>
@@ -60,55 +60,48 @@
 				</form>
 				<script>
 					$.support.cors = true;
-					                                 $("#download").submit(function(e) {
-					
-					                                     var messaggioJson = '{"Parameters": [{ ' + '"nometabella": "' + document.getElementById("nometabella").value + '",' + '"nomechiave": "' + document.getElementById("nomechiave").value + '",' + '"valorechiave": "' + document.getElementById("valorechiave").value + '",' + '"nomefile": "' + document.getElementById("nomefile").value + '",' + '"nomeclob": "' + document.getElementById("nomeclob").value + '",' + '"posizione": "' + document.getElementById("posizione").value + '"' + '}]}';
-					
-					                                     //document.getElementById("messaggio").innerHTML = messaggioJson;
-					
-					                                     e.preventDefault();
-					                                     e.stopImmediatePropagation();
-					                                     $.ajax({
-					                                         type: "POST",
-					                                         cache: false,
-					                                         url: $(this).attr('action'),
-					                                         data: messaggioJson,
-					                                         dataType: 'json',
-					                                         success: function(data) {
-					
-					                                             var messaggio = '';
-					
-					                                             var text = JSON.stringify(data);
-					
-					                                             <!--document.getElementById("demo").innerHTML = data.info.status; -->
-					
-					                                             if (data.info.status == true) {
-					
-					                                                 // messaggio = messaggio + ' <div class="alert alert-success alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> <a href="P:\">'+ data.info.description +' </div>';	
-					                                                 messaggio = messaggio + ' <div class="alert alert-success">  <strong>Success!</strong><a href="P:\">' + data.info.description + ' </div>';
-					
-					                                                 document.getElementById("messaggio").innerHTML = messaggio;
-					                                             } else {
-					                                                 //messaggio = messaggio +'<div class="alert alert-danger alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a><strong>Danger!</strong>'+  data.info.description +' </div>';
-					                                                 messaggio = messaggio + ' <div class="alert alert-danger">  <strong>Errore!</strong><a href="P:\">' + data.info.description + ' </div>';
-					
-					                                                 document.getElementById("messaggio").innerHTML = messaggio;
-					                                             }
-					
-					                                         },
-					                                         error: function(jqXHR, textStatus, errorThrown) {
-					                                             var messaggio = '';
-					                                             messaggio = messaggio + ' <div class="alert alert-danger">  <strong>Errore!</strong> ' + textStatus + ' - ' + errorThrown + ' </div>';
-					
-					                                             document.getElementById("messaggio").innerHTML = messaggio;
-					                                         }
-					                                     });
-					
-					                                 });
+					$("#download").submit(function(e) {
+
+						 var messaggioJson = '{"Parameters": [{ ' + '"nometabella": "' + document.getElementById("nometabella").value + '",' + '"nomechiave": "' + document.getElementById("nomechiave").value + '",' + '"valorechiave": "' + document.getElementById("valorechiave").value + '",' + '"nomefile": "' + document.getElementById("nomefile").value + '",' + '"nomeclob": "' + document.getElementById("nomeclob").value + '",' + '"posizione": "' + document.getElementById("posizione").value + '"' + '}]}';
+
+						 e.preventDefault();
+						 e.stopImmediatePropagation();
+						 $.ajax({
+							 type: "POST",
+							 cache: false,
+							 url: $(this).attr('action')+'?db=INT_ENGINE',
+							 data: messaggioJson,
+							 dataType: 'json',
+							 success: function(data) {
+
+								 var messaggio = '';
+
+								 var text = JSON.stringify(data);
+
+								 if (data.info.status == true) {
+									messaggio = messaggio + ' <div class="alert alert-success">  <strong>Success!</strong><a href="P:\">' + data.info.description + ' </div>';
+
+									document.getElementById("messaggio").innerHTML = messaggio;
+								 } else {
+									 messaggio = messaggio + ' <div class="alert alert-danger">  <strong>Errore!</strong><a href="P:\">' + data.info.description + ' </div>';
+
+									 document.getElementById("messaggio").innerHTML = messaggio;
+								 }
+
+							 },
+							 error: function(jqXHR, textStatus, errorThrown) {
+								 var messaggio = '';
+								 messaggio = messaggio + ' <div class="alert alert-danger">  <strong>Errore!</strong> ' + textStatus + ' - ' + errorThrown + ' </div>';
+
+								 document.getElementById("messaggio").innerHTML = messaggio;
+							 }
+						 });
+
+					 });
 					                             
 				</script>
 				<div class="modal-footer">
-					<img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png"></img>
+					<img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>
 			</div>
