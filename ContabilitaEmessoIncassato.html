@@ -1,4 +1,4 @@
-<div id="Contabilita" class="modal fade">
+<div id="ContabilitaEmessoIncassato" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
 
@@ -8,7 +8,7 @@
 				<hr>
 				
 				 
-				<form id="contabilita" class="form-horizontal" action="/corporate/contabilita/start?" enctype="multipart/form-data" method="post">
+				<form id="contabilita-emesso-incassato" class="form-horizontal" action="/corporate/contabilita/start?" enctype="multipart/form-data" method="post">
 				 
 										                                                    
                                               
@@ -48,7 +48,7 @@
 											
                                             <br>
 											
-											<div id="ProcessiContabilitaMessage"></div>
+											<div id="ContabilitaEmessoIncassatoMessage"></div>
 											
 											
 											
@@ -57,10 +57,10 @@
                                             <div class="form-group">
                                                 <div class="col-xs-offset-3 col-xs-9">
                                                     <input type="submit" class="btn btn-primary" value="Submit" >
-                                                    <input type="reset" class="btn btn-default" value="Reset" onclick="resetProcessiContabilitaMessage()">
+                                                    <input type="reset" class="btn btn-default" value="Reset" onclick="resetContabilitaEmessoIncassatoMessage()">
 													
 													<script>
-														function resetProcessiContabilitaMessage() {
+														function resetContabilitaEmessoIncassatoMessage() {
 														 
 														 
 														
@@ -81,7 +81,7 @@
 										<script>
 
 											$.support.cors = true;
-                                            $("#contabilita").submit(function(e) {
+                                            $("#contabilita-emesso-incassato").submit(function(e) {
 											
 
 											    var messaggioXml   = 'societa='+document.getElementById("sistema").options[document.getElementById("sistema").selectedIndex].value+'&idLancio='+document.getElementById("idlancio").value+'&tipoFlusso='+document.getElementById("tipoflusso").options[document.getElementById("tipoflusso").selectedIndex].value;
