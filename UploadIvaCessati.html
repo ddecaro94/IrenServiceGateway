@@ -1,136 +1,104 @@
-                        <!-- Modal HTML -->
-                        <div id="RecuperoIvaCessatiUpload" class="modal fade">
-
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-
-                                    <div class="service-gw">
-
-                                        <div class="span12">
-
-                                            <form id="upload" role="form" action="/sys/upload_csv?db=INT_ENGINE&nomeTabella=IIB_CSV_TEMP&formatoData=yyyymmdd&separatore=|" enctype="multipart/form-data" method="post">
-                                                <h2>Upload File</h2>
-                                                <hr>
-                                                <div class="row">
-
-                                                    <div class="col-xs-12">
-
-                                                        <div class="form-group">
-
-                                                            <input type="file" name="example" id="input05">
-															
-                                                        </div>
-
-                                                    </div>
-													<div class="col-xs-12">
-													<input type="submit" class="btn btn-primary" value="Submit">
-                                                            <input type="reset" class="btn btn-default" value="Reset" onclick="myFunction1()">
-													</div>
-                                                </div>
-
-                                                <div class="form-group">
-
-                                                    <p id="demo1"> </p>
-
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-xs-12">
-                                                        <div class="form-group">
-                                                            <div class="col-xs-offset-4 col-xs-12">
-                                                                
-
-                                                                <script>
-                                                                    function myFunction1() {
-                                                                        document.getElementById("demo1").innerHTML = ' <class="alert alert-success alert-dismissable" style="background-color:white; border-color:white">';
-                                                                    }
-                                                                </script>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </form>
-											
-                                            <script>
-												$.support.cors = true;
-                                                var fileInput = document.getElementById('input05');
-
-                                                var file;
-                                                var textType = /text.*/;
-                                                var reader;
-
-                                                fileInput.addEventListener('change', function(e) {
-                                                    file = fileInput.files[0];
-                                                    if (file.type.match(textType)) {
-                                                        reader = new FileReader();
-
-                                                        reader.onload = function(e) {
-                                                            fileDisplayArea.innerText = reader.result;
-                                                            document.getElementById("demo1").innerHTML = ' <class="alert alert-success alert-dismissable" style="background-color:white; border-color:white">';
-
-                                                        }
-
-                                                        reader.readAsText(file);
-                                                    } else {
-                                                        fileDisplayArea.innerText = "File not supported!";
-                                                    }
-                                                });
-
-                                                $("#upload").submit(function(e) {
-
-                                                    /*fileDisplayArea.innerText = reader.result;*/
-
-                                                    e.preventDefault();
-                                                    e.stopImmediatePropagation();
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        cache: false,
-                                                        url: $(this).attr('action'),
-                                                        data: reader.result,
-                                                        dataType: 'json',
-                                                        success: function(data) {
-
-                                                            var messaggio = '';
-
-                                                            var text = JSON.stringify(data);
-
-                                                            if (data.info.status == true) {
-
-                                                                // messaggio = messaggio + ' <div class="alert alert-success alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> <a href="P:\">'+ data.info.description +' </div>';	
-                                                                messaggio = messaggio + ' <div class="alert alert-success">  <strong>Success!</strong><a href="P:\">' + data.info.description + ' </div>';
-
-                                                                document.getElementById("demo1").innerHTML = messaggio;
-                                                            } else {
-                                                                //messaggio = messaggio +'<div class="alert alert-danger alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a><strong>Danger!</strong>'+  data.info.description +' </div>';
-                                                                messaggio = messaggio + ' <div class="alert alert-danger">  <strong>Errore!</strong><a href="P:\">' + data.info.description + ' </div>';
-
-                                                                document.getElementById("demo1").innerHTML = messaggio;
-                                                            }
-
-                                                        }
-                                                    });
-
-                                                });
-                                            </script>
-
-                                        </div>
-                                    <div class="modal-footer">
-
-                                        <img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png"></img>
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>
-                                    </div>
-
-
-
-                                </div>
-                            </div>
-							<script type="text/javascript">
-								$('#input05').filestyle({
-									buttonName: 'btn-warning'
-								});
-							</script>
-
-                        </div>
+<!-- Modal HTML -->
+<div id="RecuperoIvaCessatiUpload" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="service-gw">
+				<div class="span12">
+					<form id="upload" role="form" action="/sys/upload_csv?db=INT_ENGINE&nomeTabella=IIB_CSV_TEMP&formatoData=yyyymmdd&separatore=|" enctype="multipart/form-data" method="post">
+						<h2>Upload File</h2>
+						<hr>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group">
+									<input type="file" name="example" id="input05">
+								</div>
+							</div>
+							<div class="col-xs-12">
+								<input type="submit" class="btn btn-primary" value="Submit">
+								<input type="reset" class="btn btn-default" value="Reset" onclick="myFunction1()">
+							</div>
+						</div>
+						<div class="form-group">
+							<p id="demo1"> </p>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group">
+									<div class="col-xs-offset-4 col-xs-12">
+										<script>
+											function myFunction1() {
+											    document.getElementById("demo1").innerHTML = ' <class="alert alert-success alert-dismissable" style="background-color:white; border-color:white">';
+											}
+										</script>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+					<script>
+						$.support.cors = true;
+						                                    var fileInput = document.getElementById('input05');
+						
+						                                    var file;
+						                                    var textType = /text.*/;
+						                                    var reader;
+						
+						                                    fileInput.addEventListener('change', function(e) {
+						                                        file = fileInput.files[0];
+						                                        if (file.type.match(textType)) {
+						                                            reader = new FileReader();
+						                                            reader.readAsText(file);
+						                                        } else {
+						                                            $('#demo1').text = "File not supported!";
+						                                        }
+						                                    });
+						
+						                                    $("#upload").submit(function(e) {
+						
+						                                        e.preventDefault();
+						                                        e.stopImmediatePropagation();
+						                                        $.ajax({
+						                                            type: "POST",
+						                                            cache: false,
+						                                            url: $(this).attr('action'),
+						                                            data: reader.result,
+						                                            dataType: 'json',
+						                                            success: function(data) {
+						
+						                                                var messaggio = '';
+						
+						                                                var text = JSON.stringify(data);
+						
+						                                                if (data.info.status == true) {
+						
+						                                                    // messaggio = messaggio + ' <div class="alert alert-success alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> <a href="P:\">'+ data.info.description +' </div>';	
+						                                                    messaggio = messaggio + ' <div class="alert alert-success">  <strong>Success!</strong><a href="P:\">' + data.info.description + ' </div>';
+						
+						                                                    document.getElementById("demo1").innerHTML = messaggio;
+						                                                } else {
+						                                                    //messaggio = messaggio +'<div class="alert alert-danger alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a><strong>Danger!</strong>'+  data.info.description +' </div>';
+						                                                    messaggio = messaggio + ' <div class="alert alert-danger">  <strong>Errore!</strong><a href="P:\">' + data.info.description + ' </div>';
+						
+						                                                    document.getElementById("demo1").innerHTML = messaggio;
+						                                                }
+						
+						                                            }
+						                                        });
+						
+						                                    });
+						                                
+					</script>
+				</div>
+				<div class="modal-footer">
+					<img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png"></img>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$('#input05').filestyle({
+			buttonName: 'btn-warning'
+		});
+	</script>
+</div>
