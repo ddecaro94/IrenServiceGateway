@@ -42,18 +42,16 @@
 							<input type="text" class="form-control" id="posizione" placeholder="Percorso di salvataggio file" required>
 						</div>
 					</div>
-					<div class="col-xs-12">
-						<p id="messaggio"> </p>
-					</div>
+					<div id="RecuperoIvaCessatiDownloadMessage"></div>
 					<br>
 					<div class="form-group">
 						<div class="col-xs-offset-3 col-xs-12">
 							<input type="submit" class="btn btn-primary" value="Submit">
-							<input type="reset" class="btn btn-default" value="Reset" onclick="printMessage()">
+							<input type="reset" class="btn btn-default" value="Reset" onclick="resetRecuperoIvaCessatiDownloadMessage()">
 							<script>
-								function printMessage() {
-								    document.getElementById("messaggio").innerHTML = ' <class="alert alert-success alert-dismissable" style="background-color:white; border-color:white">';
-								}
+							function resetRecuperoIvaCessatiDownloadMessage(){
+								$('#RecuperoIvaCessatiDownloadMessage').replaceWith('<div id="RecuperoIvaCessatiDownloadMessage"></div>');
+							}
 							</script>
 						</div>
 					</div>
@@ -73,27 +71,17 @@
 							 data: messaggioJson,
 							 dataType: 'json',
 							 success: function(data) {
-
-								 var messaggio = '';
-
 								 var text = JSON.stringify(data);
 
 								 if (data.info.status == true) {
-									messaggio = messaggio + ' <div class="alert alert-success">  <strong>Success!</strong><a href="P:\">' + data.info.description + ' </div>';
 
-									document.getElementById("messaggio").innerHTML = messaggio;
+									$('#RecuperoIvaCessatiDownloadMessage').replaceWith('<div id="RecuperoIvaCessatiDownloadMessage" class="alert alert-success"><strong>Successo!</strong>' + data.info.description + ' </div>');
 								 } else {
-									 messaggio = messaggio + ' <div class="alert alert-danger">  <strong>Errore!</strong><a href="P:\">' + data.info.description + ' </div>';
-
-									 document.getElementById("messaggio").innerHTML = messaggio;
+									 $('#RecuperoIvaCessatiDownloadMessage').replaceWith('<div id="RecuperoIvaCessatiDownloadMessage" class="alert alert-danger"><strong>Errore!</strong>' + data.info.description + ' </div>');
 								 }
-
 							 },
 							 error: function(jqXHR, textStatus, errorThrown) {
-								 var messaggio = '';
-								 messaggio = messaggio + ' <div class="alert alert-danger">  <strong>Errore!</strong> ' + textStatus + ' - ' + errorThrown + ' </div>';
-
-								 document.getElementById("messaggio").innerHTML = messaggio;
+								 $('#RecuperoIvaCessatiDownloadMessage').replaceWith('<div id="RecuperoIvaCessatiDownloadMessage" class="alert alert-danger"><strong>Errore!</strong> ' + textStatus + ' - ' + errorThrown + ' </div>');
 							 }
 						 });
 
