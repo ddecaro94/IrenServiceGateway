@@ -48,12 +48,7 @@
    </div>
    <script>
       function resetContabilitaEmessoIncassatoAEEGMessage() {
-      
-      
-       
-      													
-      var messaggioXml   = 'societa=XML_AEEG&partitaIva='+document.getElementById("partitaiva").options[document.getElementById("partitaiva").selectedIndex].value+'&dataRegistrazione='+document.getElementById("aeeg-dataregistrazione").value;
-      alert(messaggioXml);
+
       
       
       $('#ContabilitaAEEGMessage').replaceWith('<div id="ContabilitaAEEGMessage"></div>');
@@ -95,6 +90,10 @@
               			todayHighlight: true,
               			autoclose: true,
               		})
+					
+					$("#ContabilitaAEEG").on("hidden.bs.modal", function(){
+						$('#ContabilitaAEEGMessage').replaceWith('<div id="ContabilitaAEEGMessage"></div>');
+					});
               	})
               
    </script>
