@@ -47,55 +47,45 @@
       </div>
    </div>
    <script>
-      function resetContabilitaEmessoIncassatoAEEGMessage() {
+    function resetContabilitaEmessoIncassatoAEEGMessage() {
+		$('#ContabilitaAEEGMessage').replaceWith('<div id="ContabilitaAEEGMessage"></div>');
+    }
+      
+    $.support.cors = true;
+	$("#contabilita-aeeg").submit(function(e) {
 
-      
-      
-      $('#ContabilitaAEEGMessage').replaceWith('<div id="ContabilitaAEEGMessage"></div>');
-      
-      }
-       
-      
-      $.support.cors = true;
-                                    $("#contabilita-aeeg").submit(function(e) {
-      
-      
-       var messaggioXml   = 'societa=XML_AEEG&partitaIva='+document.getElementById("partitaiva").options[document.getElementById("partitaiva").selectedIndex].value+'&dataRegistrazione='+document.getElementById("aeeg-dataregistrazione").value;
-      
-      
-      e.preventDefault();
-                                        e.stopImmediatePropagation();
-                                        $.ajax({
-                                            type: "POST",
-                                            cache: false,
-                                            url: $(this).attr('action')+messaggioXml,
-                                            data: '',
-                                            dataType: 'xml',
-                                            success: function(data) {
-      	$('#ContabilitaAEEGMessage').replaceWith('<div id="ContabilitaAEEGMessage" class="alert alert-info"><strong>Info - </strong>' + data.firstChild.firstChild.textContent + '</div>');
-                                                } 
-      
-      });	
-      
-      
-                                    });
+		var messaggioXml   = 'societa=XML_AEEG&partitaIva='+document.getElementById("partitaiva").options[document.getElementById("partitaiva").selectedIndex].value+'&dataRegistrazione='+document.getElementById("aeeg-dataregistrazione").value;
+		
+		e.preventDefault();
+		e.stopImmediatePropagation();
+		$.ajax({
+			type: "POST",
+			cache: false,
+			url: $(this).attr('action')+messaggioXml,
+			data: '',
+			dataType: 'xml',
+			success: function(data) {
+				$('#ContabilitaAEEGMessage').replaceWith('<div id="ContabilitaAEEGMessage" class="alert alert-info"><strong>Info - </strong>' + data.firstChild.firstChild.textContent + '</div>');
+			} 
+		});	
+    });
                                 
              
-              	$(document).ready(function(){
-              		var date_input=$('input[id="aeeg-dataregistrazione"]'); //our date input has the name "date"
-              		var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-              		date_input.datepicker({
-              			format: 'dd/mm/yyyy',
-              			container: container,
-              			todayHighlight: true,
-              			autoclose: true,
-              		})
+    $(document).ready(function(){
+        var date_input=$('input[id="aeeg-dataregistrazione"]');
+		var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+        date_input.datepicker({
+			format: 'dd/mm/yyyy',
+			container: container,
+			todayHighlight: true,
+			autoclose: true,
+		})
 					
-					$("#ContabilitaAEEG").on("hidden.bs.modal", function(){
-						$('#ContabilitaAEEGMessage').replaceWith('<div id="ContabilitaAEEGMessage"></div>');
-						document.getElementById('contabilita-aeeg').reset();
-					});
-              	})
+		$("#ContabilitaAEEG").on("hidden.bs.modal", function(){
+			$('#ContabilitaAEEGMessage').replaceWith('<div id="ContabilitaAEEGMessage"></div>');
+			document.getElementById('contabilita-aeeg').reset();
+		});
+	})
               
    </script>
 </div>
