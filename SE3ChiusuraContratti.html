@@ -1,31 +1,31 @@
 <!-- Modal HTML -->
-<div id="RecuperoIvaCessatiUpload" class="modal fade">
+<div id="SE3ChiusuraContratti" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="service-gw">
 				<div class="span12">
-					<form id="upload" role="form" action="/sys/upload_csv?db=INT_ENGINE&nomeTabella=IIB_CSV_TEMP&formatoData=yyyymmdd&separatore=|" enctype="multipart/form-data" method="post">
-						<h2>Upload File IVA Cessati</h2>
+					<form id="upload" role="form" action="/sys/upload_csv?db=C1&nomeTabella=A1336_SWITCH_OUT&chiave=A1336_ID_SWITCH_OUT&sequence=A1336_SWITCH_OUT_SEQ&chiaveUnica=NO&separatore=;&formatoData=dd/mm/yyyy&separatoreDecimali=,." enctype="multipart/form-data" method="post">
+						<h2>Caricamento SE3 Chiusura Contratti</h2>
 						<hr>
 						<div class="row">
 							<div class="col-xs-12">
 								<div class="form-group">
-									<input type="file" name="example" id="iva-cessati-file">
+									<input type="file" name="example" id="chiusura-contratti-file">
 								</div>
 							</div>
 							<div class="col-xs-12">
 								<input type="submit" class="btn btn-primary" value="Submit">
-								<input type="reset" class="btn btn-default" value="Reset" onclick="resetRecuperoIvaCessatiUploadMessage()">
+								<input type="reset" class="btn btn-default" value="Reset" onclick="resetSE3ChiusuraContrattiMessage()">
 							</div>
 						</div>
-						<div id="RecuperoIvaCessatiUploadMessage">
+						<div id="SE3ChiusuraContrattiMessage">
 						</div>
 						<div class="row">
 							<div class="col-xs-12">
 								<div class="form-group">
 									<div class="col-xs-offset-4 col-xs-12">
 										<script>
-											function resetRecuperoIvaCessatiUploadMessage() {
+											function resetSE3ChiusuraContrattiMessage() {
 											    $('#RecuperoIvaCessatiUploadMessage').replaceWith('<div id="RecuperoIvaCessatiUploadMessage"></div>');
 											}
 										</script>
@@ -36,7 +36,7 @@
 					</form>
 					<script>
 						$.support.cors = true;
-						var fileInput = document.getElementById('iva-cessati-file');
+						var fileInput = document.getElementById('chiusura-contratti-file');
 
 						var file;
 						var textType = /text.*/;
@@ -48,7 +48,7 @@
 								reader = new FileReader();
 								reader.readAsText(file);
 							} else {
-								$('#RecuperoIvaCessatiUploadMessage').replaceWith('<div id="RecuperoIvaCessatiUploadMessage" class="alert alert-info"><strong>Errore! </strong> File non supportato</div>');
+								$('#SE3ChiusuraContrattiMessage').replaceWith('<div id="SE3ChiusuraContrattiMessage" class="alert alert-info"><strong>Errore! </strong> File non supportato</div>');
 							}
 						});
 
@@ -67,9 +67,9 @@
 									var messaggio = '';
 
 									if (data.info.status == true) {
-									   $('#RecuperoIvaCessatiUploadMessage').replaceWith('<div id="RecuperoIvaCessatiUploadMessage" class="alert alert-success"><strong>Successo! </strong>' + data.info.description + '</div>');
+									   $('#SE3ChiusuraContrattiMessage').replaceWith('<div id="SE3ChiusuraContrattiMessage" class="alert alert-success"><strong>Successo! </strong>' + data.info.description + '</div>');
 									} else {
-										$('#RecuperoIvaCessatiUploadMessage').replaceWith('<div id="RecuperoIvaCessatiUploadMessage" class="alert alert-danger"><strong>Errore! </strong>' + data.info.description + '</div>');
+										$('#SE3ChiusuraContrattiMessage').replaceWith('<div id="SE3ChiusuraContrattiMessage" class="alert alert-danger"><strong>Errore! </strong>' + data.info.description + '</div>');
 									}
 								}
 							});
@@ -86,7 +86,7 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		$('#iva-cessati-file').filestyle({
+		$('#chiusura-contratti-file').filestyle({
 			buttonName: 'btn-warning'
 		});
 	</script>
