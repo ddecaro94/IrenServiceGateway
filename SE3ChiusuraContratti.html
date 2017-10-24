@@ -25,7 +25,6 @@
 							var textType = /^.*\.csv$/;
 							var reader = new FileReader();
 							$('#upload-chiusura-contratti input[type="submit"]').addClass('disabled');
-
 							$('#upload-chiusura-contratti input[type="file"]').change(function(e) {
 								resetSE3ChiusuraContrattiMessage();
 								var file = $('#upload-chiusura-contratti input[type="file"]')[0].files[0];
