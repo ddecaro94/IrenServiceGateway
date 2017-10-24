@@ -55,6 +55,8 @@
 										success: function(data) {
 											if (data.info.status == true) {
 											   $('#MLAddebitiCadeMessage').replaceWith('<div id="MLAddebitiCadeMessage" class="alert alert-success"><strong>Successo! </strong>' + data.info.description + '</div>');
+											   $('#upload-ml-addebiti-cade')[0].reset();
+											   $('#upload-ml-addebiti-cade input[type="submit"]').addClass('disabled');
 											} else {
 												$('#MLAddebitiCadeMessage').replaceWith('<div id="MLAddebitiCadeMessage" class="alert alert-danger"><strong>Errore! </strong>' + data.info.description + '</div>');
 											}

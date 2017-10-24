@@ -55,6 +55,8 @@
 										success: function(data) {
 											if (data.info.status == true) {
 											   $('#SE3ChiusuraContrattiMessage').replaceWith('<div id="SE3ChiusuraContrattiMessage" class="alert alert-success"><strong>Successo! </strong>' + data.info.description + '</div>');
+											   $('#upload-chiusura-contratti')[0].reset();
+											   $('#upload-chiusura-contratti input[type="submit"]').addClass('disabled');
 											} else {
 												$('#SE3ChiusuraContrattiMessage').replaceWith('<div id="SE3ChiusuraContrattiMessage" class="alert alert-danger"><strong>Errore! </strong>' + data.info.description + '</div>');
 											}
