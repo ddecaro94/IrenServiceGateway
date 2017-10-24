@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>Client</title>
+		<!-- JQUERY -->
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<!-- ICONE MATERIALS -->
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<!-- BOOTSTRAP -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		
+		​<!-- Include Date Range Picker -->
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>​
+		
+		<script type="text/javascript">
+			$(document).ready(function() {
+			    $('[data-toggle="popover"]').popover({
+			        html: true,
+			        template: '<div class="popover"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-footer"><a href="#" class="btn btn-info btn-sm">Yes</a><a href="#" class="btn btn-info btn-sm pull-right">No</a></div></div></div>'
+			    });
+			
+			    // Custom jQuery to hide popover on click of the close button
+			    $(document).on("click", ".popover-footer .btn", function() {
+			        $(this).parents(".popover").popover('hide');
+			    });
+			});
+		</script>
+		<script type="text/javascript" src="/sys/download?filename=/scripts/bootstrap-filestyle.js"></script>
+		<script type="text/javascript" src="/sys/download?filename=/scripts/typeahead.js"></script>
+		<script>
+			function parseQuery(qstr) {
+				var query = {};
+				var a = (qstr[0] === '?' ? qstr.substr(1) : qstr).split('&');
+				for (var i = 0; i < a.length; i++) {
+					var b = a[i].split('=');
+					query[decodeURIComponent(b[0])] = decodeURIComponent(b[1] || '');
+				}
+				return query;
+			};
+		</script>
+		<style type="text/css">
+			.scrollable-menu {
+			min-width: 220px;
+			max-height: 60vh;
+			overflow: auto;
+			}
+			.scrollable-tbody {
+			display: block;
+			max-height: 60vh;
+			overflow-y: scroll;
+			overflow-x: hidden;
+			}
+			.gw-table thead,
+			.gw-tbody tr {
+			display: table;
+			width: 100%;
+			table-layout: fixed;
+			}
+			.service-gw {
+			position: relative;
+			margin: 20px;
+			}
+			.service-gw td {
+			text-align: center;
+			}
+			.service-gw th {
+			text-align: center;
+			}
+			.typeahead,
+			.tt-query,
+			.tt-hint {
+			border: 2px solid #CCCCCC;
+			border-radius: 8px;
+			font-size: 22px;
+			/* Set input font size */
+			height: 30px;
+			line-height: 30px;
+			outline: medium none;
+			padding: 8px 12px;
+			width: 396px;
+			}
+			.typeahead {
+			background-color: #FFFFFF;
+			}
+			.typeahead:focus {
+			border: 2px solid #0097CF;
+			}
+			.tt-query {
+			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+			}
+			.tt-hint {
+			color: #999999;
+			}
+			.tt-menu {
+			background-color: #FFFFFF;
+			border: 1px solid rgba(0, 0, 0, 0.2);
+			border-radius: 8px;
+			box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+			margin-top: 12px;
+			padding: 8px 0;
+			width: 422px;
+			}
+			.tt-suggestion {
+			font-size: 22px;
+			/* Set suggestion dropdown font size */
+			padding: 3px 20px;
+			}
+			.tt-suggestion:hover {
+			cursor: pointer;
+			background-color: #0097CF;
+			color: #FFFFFF;
+			}
+			.tt-suggestion p {
+			margin: 0;
+			}
+			.glyphicon-ring {
+			width: 60px;
+			height: 60px;
+			border-radius: 50%;
+			border: 4px solid black;
+			color: black;
+			display: inline-table;
+			text-align: center;
+			}
+			.glyphicon-ring .glyphicon-bordered {
+			font-size: 20px;
+			vertical-align: middle;
+			display: table-cell;
+			}
+			.gw-input{
+			margin: 5px 0px;
+			}
+			.form-group input[type="checkbox"] {
+			display: none;
+			}
+			.form-group input[type="checkbox"] + .btn-group > label span:last-child {
+			display: none;
+			}
+			.form-group input[type="checkbox"] + .btn-group > label span:first-child {
+			display: inline-block;
+			}
+			.form-group input[type="checkbox"]:checked + .btn-group > label span:last-child {
+			display: inline-block;
+			}
+			.form-group input[type="checkbox"]:checked + .btn-group > label span:first-child {
+			display: none;
+			}
+		</style>
+	</head>
+	<body id="body">
+		<div class="service-gw">
+			<header class="header"></header>
+			<nav class="navbar navbar-default ">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					</button>
+					<img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png">
+				</div>
+				<!-- Collection of nav links, forms, and other content for toggling -->
+				<div id="navbarCollapse" class="collapse navbar-collapse">
+					<ul id="navbar-categories" class="nav navbar-nav navbar-left">
+					</ul>
+				</div>
+			</nav>
+			<div class="container">
+				<div class="jumbotron">
+					<h1 class="display-3">Services Gateway</h1>
+					<p class="display-3">Scegli l'operazione che desideri eseguire dalla lista in alto a destra.</p>
+					<div class="row-3">
+						<div class="item col-md-2 col-sm-2 col-md-offset-1">
+							<figure><img src="/sys/download?filename=/html/Irenicons/btn_menu_luce.png"></figure>
+						</div>
+						<div class="item col-md-2 col-sm-2">
+							<figure><img src="/sys/download?filename=/html/Irenicons/btn_menu_gas.png"></figure>
+						</div>
+						<div class="item col-md-2 col-sm-2">
+							<figure><img src="/sys/download?filename=/html/Irenicons/btn_menu_servizi.png"></figure>
+						</div>
+						<div class="item col-md-2 col-sm-2">
+							<figure><img src="/sys/download?filename=/html/Irenicons/btn_menu_ambiente.png"></figure>
+						</div>
+						<div class="item col-md-2 col-sm-2">
+							<figure><img src="/sys/download?filename=/html/Irenicons/btn_menu_acqua.png"></figure>
+						</div>
+					</div>
+				</div>
+			</div>
+			<script>
+				var token = parseQuery(window.location.search).user;
+				$(document).ready(function(e) {
+					$.ajax({
+						type: "GET",
+						cache: false,
+						url: '/sys/users?user=' + token,
+						data: '',
+						dataType: 'json',
+						success: function(data) {
+								var username = '';
+								if(data[0] !== undefined){
+									username= data[0].USERNAME;
+								}
+								
+								$('#navbarCollapse').append('<ul class="nav navbar-nav navbar-right"><li class="nav-item"><a>'+username+' </a></li><li><img class="navbar-brand" style="padding:2px" src="/sys/download?filename=/html/Irenicons/user-icon2.png"></li></ul>');
+						}
+					});
+					
+					$.ajax({
+						type: "GET",
+						cache: false,
+						url: '/sys/resources?user=' + token,
+						data: '',
+						dataType: 'json',
+						success: function(data) {
+							data.forEach(function(obj){
+								var categoryName = Object.keys(obj)[0];
+								var menuName = categoryName+'-menu';
+								$('#navbar-categories').append('<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" href="#">'+categoryName +'<b class="caret"></b></a><ul id="'+menuName+'" class="dropdown-menu scrollable-menu"></ul></li>');
+								obj[categoryName].forEach(function(cat){
+									var test = $("[id='"+menuName+"']");
+									$("[id='"+menuName+"']").append('<li><a href="#'+cat.Name+'" data-toggle="modal">'+cat.Description+'</a></li>');
+									$.ajax({
+										type: "GET",
+										cache: false,
+										url: cat.URL,
+										data: '',
+										dataType: 'html',
+										success: function(data) {
+											$(body).append(data);
+										}
+									});
+					
+								});
+							});
+						}
+					});
+				});
+			</script>
+		</div>
+	</body>
+</html>

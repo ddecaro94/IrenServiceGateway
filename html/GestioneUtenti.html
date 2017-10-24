@@ -1,0 +1,405 @@
+<div id="GestioneUtenti" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="service-gw">
+				<h1>Gestione Utenti</h1>
+				<hr>
+				<form id="addUser" class="form-horizontal" action="/sys/users" method="post">
+					<div class="form-group">
+						<div class="col-md-9">
+							<input type="text" class="form-control gw-input" id="firstName" placeholder="Crea nuovo utente" required>
+						</div>
+						<div class="col-md-3">
+							<input type="submit" class="btn btn-primary form-control gw-input" value="Crea">
+						</div>
+					</div>
+				</form>
+				<br>
+				<div class="service-gw" style="margin-left: 0px;">
+					<h3>Filtra utenti</h3>
+					<input id="searchUser" type="text" class="typeahead tt-query" autocomplete="off" spellcheck="false">
+				</div>
+				<div class="form-group">
+					<p id="demo"> </p>
+				</div>
+			</div>
+			<div class="service-gw">
+				<table class="table table-striped gw-table">
+					<thead style="max-width: 96%;">
+						<tr>
+							<th>Id</th>
+							<th>Utente</th>
+							<th>Elimina</th>
+							<th>Permessi</th>
+						</tr>
+					</thead>
+					<tbody id="users" class="scrollable-tbody gw-tbody">
+					</tbody>
+				</table>
+				<div id="gestione-utenti-message"></div>
+				<br>
+				<div class="modal-footer">
+					<img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="regole" class="modal fade">
+		<div class="modal-dialog pull-right" style="max-width:30vw; height:60vh; margin-right:2vw">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Permessi utente</h4>
+				</div>
+				<div class="service-gw">
+					<table class="table table-striped gw-table">
+						<thead style="max-width:94%">
+							<tr>
+								<th>Servizio</th>
+								<th>Abilitato</th>
+							</tr>
+						</thead>
+						<tbody id="permissions" class="scrollable-tbody gw-tbody">
+						</tbody>
+					</table>
+					<div id="permissions-message"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-target="#regole" onclick="$('#regole').modal('hide');">Chiudi</button>
+					<button type="button" class="btn btn-primary" onclick="postPermissions()">Salva</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		+ function(a) {
+		    "use strict";
+		    var b = !1,
+		        c = function(c, d) {
+		            var e = this;
+		            this.init("confirmation", c, d), a(c).on("show.bs.confirmation", function(b) {
+		                e.options.onShow(b, this), a(this).addClass("open");
+		                var c = e.options,
+		                    d = c.all_selector;
+		                c.singleton && a(d).not(e.$element).each(function() {
+		                    a(this).hasClass("open") && a(this).confirmation("hide")
+		                })
+		            }), a(c).on("hide.bs.confirmation", function(b) {
+		                e.options.onHide(b, this), a(this).removeClass("open")
+		            }), a(c).on("shown.bs.confirmation", function(c) {
+		                var d = e.options;
+		                d.all_selector;
+		                e.isPopout() && (b || (b = a("body").on("click", function(c) {
+		                    e.$element.is(c.target) || e.$element.has(c.target).length || a(".popover").has(c.target).length || (e.hide(), e.inState.click = !1, a("body").unbind(c), b = !1)
+		                })))
+		            }), d.selector ? a(c).on("click.bs.confirmation", d.selector, function(a) {
+		                a.preventDefault()
+		            }) : a(c).on("click.bs.confirmation", function(a) {
+		                a.preventDefault()
+		            })
+		        };
+		    if (!a.fn.popover || !a.fn.tooltip) throw new Error("Confirmation requires popover.js and tooltip.js");
+		    c.VERSION = "1.0.5", c.DEFAULTS = a.extend({}, a.fn.popover.Constructor.DEFAULTS, {
+		        placement: "right",
+		        title: "Sei sicuro?",
+		        btnOkClass: "btn btn-sm btn-danger",
+		        btnOkLabel: "Delete",
+		        btnOkIcon: "glyphicon glyphicon-ok",
+		        btnCancelClass: "btn btn-sm btn-default",
+		        btnCancelLabel: "Cancel",
+		        btnCancelIcon: "glyphicon glyphicon-remove",
+		        target: "_self",
+		        singleton: !0,
+		        popout: !0,
+		        onShow: function(a, b) {},
+		        onHide: function(a, b) {},
+		        onConfirm: function(a, b) {
+		//codice gestione cancellazione utente
+		var el = b.parent().parent().children()[0].innerText;
+		
+		$.ajax({
+		type: "DELETE",
+		cache: false,
+		url: "/sys/users/" + b.parent().parent().children()[0].innerText,
+		data: '',
+		success: function(data) {
+		$('#gestione-utenti-message').replaceWith('<div id="gestione-utenti-message" class="alert alert-success">  <strong>Eliminato</strong> Cancellazione utente eseguita.</div>');
+		refreshUsers();
+		},
+		error: function(data) {
+		$('#gestione-utenti-message').replaceWith('<div id="gestione-utenti-message" class="alert alert-danger">  <strong>Errore</strong> Cancellazione utente non riuscita ('+e.status+' '+e.statusText+')</div>');
+		}
+		});
+		
+		},
+		        onCancel: function(a, b) {},
+		        template: '<div class="popover" style="width:180px"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"><a data-apply="confirmation">Yes</a><a data-dismiss="confirmation">No</a></div></div>'
+		    }), c.prototype = a.extend({}, a.fn.popover.Constructor.prototype), c.prototype.constructor = c, c.prototype.getDefaults = function() {
+		        return c.DEFAULTS
+		    }, c.prototype.setContent = function() {
+		        var b = this,
+		            c = this.tip(),
+		            d = this.getTitle(),
+		            e = c.find('[data-apply="confirmation"]'),
+		            f = c.find('[data-dismiss="confirmation"]'),
+		            g = this.options;
+		        e.addClass(this.getBtnOkClass()).html(this.getBtnOkLabel()).prepend(a("<i></i>").addClass(this.getBtnOkIcon()), " ").attr("href", this.getHref()).attr("target", this.getTarget()).off("click").on("click", function(a) {
+		            g.onConfirm(a, b.$element), "submit" == b.$element.attr("type") && b.$element.closest("form").first().submit(), b.hide(), b.inState.click = !1
+		        }), f.addClass(this.getBtnCancelClass()).html(this.getBtnCancelLabel()).prepend(a("<i></i>").addClass(this.getBtnCancelIcon()), " ").off("click").on("click", function(a) {
+		            g.onCancel(a, b.$element), b.hide(), b.inState.click = !1
+		        }), c.find(".popover-title")[this.options.html ? "html" : "text"](d), c.removeClass("fade top bottom left right in"), c.find(".popover-title").html() || c.find(".popover-title").hide()
+		    }, c.prototype.getBtnOkClass = function() {
+		        var a = this.$element,
+		            b = this.options;
+		        return a.attr("data-btnOkClass") || ("function" == typeof b.btnOkClass ? b.btnOkClass.call(this, a[0]) : b.btnOkClass)
+		    }, c.prototype.getBtnOkLabel = function() {
+		        var a = this.$element,
+		            b = this.options;
+		        return a.attr("data-btnOkLabel") || ("function" == typeof b.btnOkLabel ? b.btnOkLabel.call(this, a[0]) : b.btnOkLabel)
+		    }, c.prototype.getBtnOkIcon = function() {
+		        var a = this.$element,
+		            b = this.options;
+		        return a.attr("data-btnOkIcon") || ("function" == typeof b.btnOkIcon ? b.btnOkIcon.call(this, a[0]) : b.btnOkIcon)
+		    }, c.prototype.getBtnCancelClass = function() {
+		        var a = this.$element,
+		            b = this.options;
+		        return a.attr("data-btnCancelClass") || ("function" == typeof b.btnCancelClass ? b.btnCancelClass.call(this, a[0]) : b.btnCancelClass)
+		    }, c.prototype.getBtnCancelLabel = function() {
+		        var a = this.$element,
+		            b = this.options;
+		        return a.attr("data-btnCancelLabel") || ("function" == typeof b.btnCancelLabel ? b.btnCancelLabel.call(this, a[0]) : b.btnCancelLabel)
+		    }, c.prototype.getBtnCancelIcon = function() {
+		        var a = this.$element,
+		            b = this.options;
+		        return a.attr("data-btnCancelIcon") || ("function" == typeof b.btnCancelIcon ? b.btnCancelIcon.call(this, a[0]) : b.btnCancelIcon)
+		    }, c.prototype.getHref = function() {
+		        var a = this.$element,
+		            b = this.options;
+		        return a.attr("data-href") || ("function" == typeof b.href ? b.href.call(this, a[0]) : b.href)
+		    }, c.prototype.getTarget = function() {
+		        var a = this.$element,
+		            b = this.options;
+		        return a.attr("data-target") || ("function" == typeof b.target ? b.target.call(this, a[0]) : b.target)
+		    }, c.prototype.isPopout = function() {
+		        var a, b = this.$element,
+		            c = this.options;
+		        return a = b.attr("data-popout") || ("function" == typeof c.popout ? c.popout.call(this, b[0]) : c.popout), "false" == a && (a = !1), a
+		    };
+		    var d = a.fn.confirmation;
+		    a.fn.confirmation = function(b) {
+		        var d = this;
+		        return this.each(function() {
+		            var e = a(this),
+		                f = e.data("bs.confirmation"),
+		                g = "object" == typeof b && b;
+		            g = g || {}, g.all_selector = d.selector, (f || "destroy" != b) && (f || e.data("bs.confirmation", f = new c(this, g)), "string" == typeof b && f[b]())
+		        })
+		    }, a.fn.confirmation.Constructor = c, a.fn.confirmation.noConflict = function() {
+		        return a.fn.confirmation = d, this
+		    }
+		}(jQuery);
+	</script>
+	<script>
+		$(function() {
+		    $('body').confirmation({
+		        selector: '[data-toggle="confirmation"]'
+		    });
+		
+		    $('.confirmation-callback').confirmation({
+		        onConfirm: function() {
+		            alert('confirm')
+		        },
+		        onCancel: function() {
+		            alert('cancel')
+		        }
+		    });
+		});
+	</script>
+	<script>
+		var engine = null;
+		var token = parseQuery(window.location.search).user;
+		
+		function refreshUsers(){
+			var contact = null;
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					// Typical action to be performed when the document is ready:
+					contact = xhttp.responseText;
+					var body = $("#users");
+					body.empty();
+					var users = JSON.parse(contact).map(function(obj) {
+						return obj.USERNAME;
+					});
+					JSON.parse(contact).forEach(function(obj) {
+						body.append('<tr>' +
+							'<td style="vertical-align:middle;">' + obj.ID_USER + '</td>' +
+							'<td style="vertical-align:middle;">' + obj.USERNAME + '</td>' +
+							'<td style="vertical-align:middle;">' +
+							'<a href="#" class="glyphicon glyphicon-remove" data-toggle="confirmation" style="font-size:22px;color:red" ></a>' +
+							'</td>' +
+							'<td style="vertical-align:middle;"><a href="#regole"  class="glyphicon glyphicon-cog" data-toggle="modal" style="font-size:22px;" onclick="loadPermissions($(this).parent().parent().children()[0].innerText)"></a></td></tr>');
+					});
+					
+		                           engine.clear();
+		                           engine.local = users;
+		                           engine.initialize(true);
+				}
+			};
+			xhttp.open("GET", "/sys/users", true);
+			xhttp.send();
+		};
+		
+		function loadPermissions(id){
+			$.ajax({
+		                       type: "GET",
+		                       cache: false,
+		                       url: '/sys/permissions/'+id+'?user=' + token,
+		                       data: '',
+		                       success: function(data) {
+					var permissions = $('#permissions');
+					permissions.empty();
+		                           data.forEach(function(obj) {
+						if(obj.ALLOWED == 'BLANK'){
+							permissions.append(
+								'<tr id='+id+'-'+obj.ID_RES+'><td>'+obj.NAME+'</td><td>'+
+		
+												'<div class="btn-group btn-toggle">'+
+													'<button class="btn btn-xs disabled btn-primary">ON</button>'+
+													'<button class="btn btn-xs disabled btn-default">OFF</button>'+
+												'</div></td>'+
+								'</tr>');
+						
+						} else {
+							if(obj.ALLOWED == 'YES'){
+								permissions.append(
+								'<tr id='+id+'-'+obj.ID_RES+'><td>'+obj.NAME+'</td><td>'+
+		
+												'<div class="btn-group btn-toggle">'+
+													'<button class="btn btn-xs btn-primary active ">ON</button>'+
+													'<button class="btn btn-xs btn-default">OFF</button>'+
+												'</div></td>'+
+								'</tr>');
+							} else {
+								permissions.append(
+								'<tr id='+id+'-'+obj.ID_RES+'><td>'+obj.NAME+'</td><td>'+
+		
+												'<div class="btn-group btn-toggle">'+
+													'<button class="btn btn-xs btn-default">ON</button>'+
+													'<button class="btn btn-xs btn-primary active">OFF</button>'+
+												'</div></td>'+
+								'</tr>');
+							};					
+						}
+					});
+					$('.btn-toggle').click(function() {
+						if ($(this).find('.active').size() > 0) {
+							$(this).find('.btn').toggleClass('active');
+							$(this).find('.btn').toggleClass('btn-primary');
+						}
+						
+						$(this).find('.btn').toggleClass('btn-default');
+					});
+		                       }
+		                   });
+		};
+		
+		function postPermissions() {
+			var data = $('#permissions tr').toArray();
+			var id = data[0].id.substring(0,10);
+			var permissions = data.filter(function(obj){
+				return($(obj).find('.active')[0].innerText == 'ON');
+			}).map(function(obj){
+				var idRes = obj.id.substring(11, 21);
+				return idRes;
+			});
+			
+			
+			$.ajax({
+		                       type: "POST",
+		                       cache: false,
+		                       url: '/sys/permissions/'+id+'?user=' + token,
+		                       data: JSON.stringify(permissions),
+		                       success: function(data) {
+					$('#permissions-message').replaceWith('<div id="permissions-message" class="alert alert-success">  <strong>Salvato</strong> Abilitazioni salvate con successo.</div>');
+		                       },
+				error: function(e){
+					$('#permissions-message').replaceWith('<div id="permissions-message" class="alert alert-danger">  <strong>Errore</strong> Modifica permessi non riuscita ('+e.status+' '+e.statusText+')</div>');
+				}
+		                   });
+		};
+		
+		
+		
+		
+		$(document).ready(function(e) {
+			refreshUsers();
+			$("#GestioneUtenti").on("hidden.bs.modal", function(){
+				$('#gestione-utenti-message').replaceWith('<div id="gestione-utenti-message"></div>');
+			});
+			$("#regole").on("hidden.bs.modal", function(){
+				$('#permissions-message').replaceWith('<div id="permissions-message"></div>');
+			});
+			
+			// Constructing the suggestion engine
+			engine = new Bloodhound({
+				datumTokenizer: Bloodhound.tokenizers.whitespace,
+				queryTokenizer: Bloodhound.tokenizers.whitespace,
+				local: users
+			});
+			
+			// Initializing the typeahead
+			$('.typeahead').typeahead({
+				hint: true,
+				highlight: true,
+				/* Enable substring highlighting */
+				minLength: 1 /* Specify minimum characters required for showing result */
+			}, {
+				name: 'users',
+				source: engine
+			});
+				
+			$("#searchUser").keyup(function(e) {
+				var username = $("#searchUser").val();
+				var rows = $("#users").find("tr").hide();
+				if (this.value.length) {
+					var data = this.value.split(" ");
+					$.each(data, function(i, v) {
+						rows.filter(":contains('" + username + "')").show();
+					});
+				} else rows.show();
+		
+			});
+		
+			$("#searchUser").change(function(e) {
+				var username = $("#searchUser").val();
+				var rows = $("#users").find("tr").hide();
+				if (this.value.length) {
+					var data = this.value.split(" ");
+					$.each(data, function(i, v) {
+						rows.filter(":contains('" + username + "')").show();
+					});
+				} else rows.show();
+		
+			});
+		});
+		
+		
+		               $("#addUser").submit(function(e) {
+		                   e.preventDefault();
+		                   e.stopImmediatePropagation();
+		                   $.ajax({
+		                       type: "POST",
+		                       cache: false,
+		                       url: $(this).attr('action') + '?username=' + $("#firstName").val(),
+		                       data: '',
+		                       success: function(data) {
+		                           refreshUsers();
+		                       }
+		                   });
+		
+		               });
+		           
+	</script>
+</div>

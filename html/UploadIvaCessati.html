@@ -1,0 +1,90 @@
+<!-- Modal HTML -->
+<div id="RecuperoIvaCessatiUpload" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="service-gw">
+				<div class="span12">
+					<form id="upload-iva-cessati" role="form" action="/sys/upload_csv?db=INT_ENGINE&nomeTabella=IIB_CSV_TEMP&formatoData=yyyymmdd&separatore=|" enctype="multipart/form-data" method="post">
+						<h2>Upload File IVA Cessati</h2>
+						<hr>
+						<div class="form-group">
+							<input type="file" name="example">
+						</div>
+							
+						<div class="form-group">
+							<input type="submit" class="btn btn-primary" value="Submit">
+							<input type="reset" class="btn btn-default" value="Reset" onclick="resetRecuperoIvaCessatiUploadMessage()">
+						</div>
+						
+						<div id="RecuperoIvaCessatiUploadMessage"></div>
+						
+						<script>
+							$.support.cors = true;
+							var textType = /^.*\.csv$/;
+							var reader = new FileReader();
+							$('#upload-iva-cessati input[type="submit"]').addClass('disabled');
+
+							$('#upload-iva-cessati input[type="file"]').change(function(e) {
+								resetRecuperoIvaCessatiUploadMessage();
+								var file = $('#upload-iva-cessati input[type="file"]')[0].files[0];
+								if (file.name.match(textType)) {
+									reader.readAsText(file);
+									reader.onloadstart = function(){
+										$('#upload-iva-cessati input[type="submit"]').addClass('disabled');
+									}
+									reader.onloadend = function(){
+										$('#upload-iva-cessati input[type="submit"]').removeClass('disabled');
+									};
+								} else {
+									$('#RecuperoIvaCessatiUploadMessage').replaceWith('<div id="RecuperoIvaCessatiUploadMessage" class="alert alert-info"><strong>Errore! </strong> File non supportato</div>');
+									$('#upload-iva-cessati input[type="submit"]').addClass('disabled');
+								}
+							});
+
+							$("#upload-iva-cessati").submit(function(e) {
+								e.preventDefault();
+								e.stopImmediatePropagation();
+								if(!$('#upload-iva-cessati input[type="submit"]').hasClass('disabled')){
+									$.ajax({
+										type: "POST",
+										cache: false,
+										url: $(this).attr('action'),
+										data: reader.result,
+										dataType: 'json',
+										success: function(data) {
+											if (data.info.status == true) {
+											   $('#RecuperoIvaCessatiUploadMessage').replaceWith('<div id="RecuperoIvaCessatiUploadMessage" class="alert alert-success"><strong>Successo! </strong>' + data.info.description + '</div>');
+											} else {
+												$('#RecuperoIvaCessatiUploadMessage').replaceWith('<div id="RecuperoIvaCessatiUploadMessage" class="alert alert-danger"><strong>Errore! </strong>' + data.info.description + '</div>');
+											}
+										},
+										error: function(data, textStatus, errorThrown){
+											$('#RecuperoIvaCessatiUploadMessage').replaceWith('<div id="RecuperoIvaCessatiUploadMessage" class="alert alert-danger"><strong>Errore! </strong>' + errorThrown + '</div>');
+										}
+									});
+								}
+							});
+															
+							function resetRecuperoIvaCessatiUploadMessage() {
+								$('#RecuperoIvaCessatiUploadMessage').replaceWith('<div id="RecuperoIvaCessatiUploadMessage"></div>');
+								$('#upload-iva-cessati input[type="submit"]').addClass('disabled');
+							}
+						</script>
+					</form>
+					
+				</div>
+				<div class="modal-footer">
+					<img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png"></img>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+					
+	<script type="text/javascript">
+		$('#upload-iva-cessati input[type="file"]').filestyle({
+			buttonName: 'btn-warning'
+		});
+	</script>
+</div>

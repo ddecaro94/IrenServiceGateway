@@ -1,0 +1,91 @@
+<!-- Modal HTML -->
+<div id="MLAddebitiCade" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="service-gw">
+				<div class="span12">
+					<form id="upload-ml-addebiti-cade" role="form" action="/ime/addebiti_cade?db=C2&separatore=|&formatoData=dd/mm/yyyy&separatoreDecimali=,." enctype="multipart/form-data" method="post">
+						<h2>Creazione addebiti CADE Mercato Libero</h2>
+						<hr>
+						<div class="form-group">
+							<input type="file" name="example">
+						</div>
+							
+						<div class="form-group">
+							<input type="submit" class="btn btn-primary" value="Submit">
+							<input type="reset" class="btn btn-default" value="Reset" onclick="resetMLAddebitiCadeMessage()">
+						</div>
+						
+						<div id="MLAddebitiCadeMessage">
+						</div>
+						
+							
+						<script>
+							$.support.cors = true;
+							var textType = /^.*\.csv$/;
+							var reader = new FileReader();
+							$('#upload-upload-ml-addebiti-cade input[type="submit"]').addClass('disabled');
+							$('#upload-ml-addebiti-cade input[type="file"]').change(function(e) {
+								resetMLAddebitiCadeMessage();
+								var file = $('#upload-ml-addebiti-cade input[type="file"]')[0].files[0];
+								if (file.name.match(textType)) {
+									reader.readAsText(file);
+									reader.onloadstart = function(){
+										$('#upload-ml-addebiti-cade input[type="submit"]').addClass('disabled');
+									}
+									reader.onloadend = function(){
+										$('#upload-ml-addebiti-cade input[type="submit"]').removeClass('disabled');
+									};
+								} else {
+									$('#MLAddebitiCadeMessage').replaceWith('<div id="MLAddebitiCadeMessage" class="alert alert-info"><strong>Errore! </strong> File non supportato</div>');
+									$('#upload-ml-addebiti-cade input[type="submit"]').addClass('disabled');
+								}
+							});
+
+							$("#upload-ml-addebiti-cade").submit(function(e) {
+								e.preventDefault();
+								e.stopImmediatePropagation();
+								if(!$('#upload-ml-addebiti-cade input[type="submit"]').hasClass('disabled')){
+									$.ajax({
+										type: "POST",
+										cache: false,
+										url: $(this).attr('action'),
+										data: reader.result,
+										dataType: 'json',
+										success: function(data) {
+											if (data.info.status == true) {
+											   $('#MLAddebitiCadeMessage').replaceWith('<div id="MLAddebitiCadeMessage" class="alert alert-success"><strong>Successo! </strong>' + data.info.description + '</div>');
+											} else {
+												$('#MLAddebitiCadeMessage').replaceWith('<div id="MLAddebitiCadeMessage" class="alert alert-danger"><strong>Errore! </strong>' + data.info.description + '</div>');
+											}
+										},
+										error: function(data, textStatus, errorThrown){
+											$('#MLAddebitiCadeMessage').replaceWith('<div id="MLAddebitiCadeMessage" class="alert alert-danger"><strong>Errore! </strong>' + errorThrown + '</div>');
+										}
+									});
+								}
+							});
+															
+							function resetMLAddebitiCadeMessage() {
+								$('#MLAddebitiCadeMessage').replaceWith('<div id="MLAddebitiCadeMessage"></div>');
+								$('#upload-ml-addebiti-cade input[type="submit"]').addClass('disabled');
+							}
+						</script>
+						
+					</form>
+					
+				</div>
+				<div class="modal-footer">
+					<img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png"></img>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$('#upload-ml-addebiti-cade input[type="file"]').filestyle({
+			buttonName: 'btn-warning'
+		});
+	</script>
+</div>
