@@ -22,56 +22,7 @@
 							
 						<script>
 							$.support.cors = true;
-							var textType = /^.*\.csv$/;
-							var reader = new FileReader();
-							$('#upload-chiusura-contratti input[type="submit"]').addClass('disabled');
-							$('#upload-chiusura-contratti input[type="file"]').change(function(e) {
-								resetSE3ChiusuraContrattiMessage();
-								var file = $('#upload-chiusura-contratti input[type="file"]')[0].files[0];
-								if (file.name.match(textType)) {
-									reader.readAsText(file);
-									reader.onloadstart = function(){
-										$('#upload-chiusura-contratti input[type="submit"]').addClass('disabled');
-									}
-									reader.onloadend = function(){
-										$('#upload-chiusura-contratti input[type="submit"]').removeClass('disabled');
-									};
-								} else {
-									$('#SE3ChiusuraContrattiMessage').replaceWith('<div id="SE3ChiusuraContrattiMessage" class="alert alert-info"><strong>Errore! </strong> File non supportato</div>');
-									$('#upload-chiusura-contratti input[type="submit"]').addClass('disabled');
-								}
-							});
-
-							$("#upload-chiusura-contratti").submit(function(e) {
-								e.preventDefault();
-								e.stopImmediatePropagation();
-								if(!$('#upload-chiusura-contratti input[type="submit"]').hasClass('disabled')){
-									$.ajax({
-										type: "POST",
-										cache: false,
-										url: $(this).attr('action'),
-										data: reader.result,
-										dataType: 'json',
-										success: function(data) {
-											if (data.info.status == true) {
-											   $('#SE3ChiusuraContrattiMessage').replaceWith('<div id="SE3ChiusuraContrattiMessage" class="alert alert-success"><strong>Successo! </strong>' + data.info.description + '</div>');
-											   $('#upload-chiusura-contratti')[0].reset();
-											   $('#upload-chiusura-contratti input[type="submit"]').addClass('disabled');
-											} else {
-												$('#SE3ChiusuraContrattiMessage').replaceWith('<div id="SE3ChiusuraContrattiMessage" class="alert alert-danger"><strong>Errore! </strong>' + data.info.description + '</div>');
-											}
-										},
-										error: function(data, textStatus, errorThrown){
-											$('#SE3ChiusuraContrattiMessage').replaceWith('<div id="SE3ChiusuraContrattiMessage" class="alert alert-danger"><strong>Errore! </strong>' + errorThrown + '</div>');
-										}
-									});
-								}
-							});
-															
-							function resetSE3ChiusuraContrattiMessage() {
-								$('#SE3ChiusuraContrattiMessage').replaceWith('<div id="SE3ChiusuraContrattiMessage"></div>');
-								$('#upload-chiusura-contratti input[type="submit"]').addClass('disabled');
-							}
+							uploadFileHandler('upload-chiusura-contratti', /^.*\.csv$/, 'SE3ChiusuraContrattiMessage');
 						</script>
 						
 					</form>
