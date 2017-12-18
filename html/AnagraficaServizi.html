@@ -22,14 +22,13 @@
 	 
 			<div class="service-gw">
 				<table class="table table-striped gw-table">
-					<thead style="max-width: 96%;">
+					<thead style="max-width: 98%;">
 						<tr>
-							<th>ID_SERVIZIO</th>
-							<th>BUSINESS_UNIT</th>
-							<th>APPLICAZIONE</th>
-							<th>SERVIZIO</th>
-							<th>URL</th>
-							<th>DESCRIZIONE</th>
+							<th class="col-sm-1">BUSINESS_UNIT</th>
+							<th class="col-sm-4">APPLICAZIONE</th>
+							<th class="col-sm-3">SERVIZIO</th>
+							<th class="col-sm-3">URL</th>
+							<th class="col-sm-1">DESCRIZIONE</th>
 						</tr>
 					</thead>
 					<tbody id="AnagServizi" class="scrollable-tbody gw-tbody">
@@ -101,15 +100,14 @@
 					});
 					JSON.parse(contact).forEach(function(obj) {
 						body.append('<tr>' +
-							'<td style="vertical-align:middle;">' + obj.ID_SERVIZIO+ '</td>' +
-							'<td style="vertical-align:middle;">' + obj.BUSINESS_UNIT + '</td>' +
-							'<td style="vertical-align:middle;">' + obj.APPLICAZIONE + '</td>' +
-							'<td style="vertical-align:middle;">' + obj.SERVIZIO + '</td>' +
-							'<td style="vertical-align:middle;">' + obj.URL + '</td>' +
+							'<td style="vertical-align:middle;" class="col-sm-1">' + obj.BUSINESS_UNIT + '</td>' +
+							'<td style="vertical-align:middle;" class="col-sm-4">' + obj.APPLICAZIONE + '</td>' +
+							'<td style="vertical-align:middle;" class="col-sm-3">' + obj.SERVIZIO + '</td>' +
+							'<td style="vertical-align:middle;" class="col-sm-3">' + obj.URL + '</td>' +
 							
 							
 							 
-							'<td style="vertical-align:middle;"><a href="#modalparametri"  class="glyphicon glyphicon-cog" data-toggle="modal" style="font-size:22px;" onclick="loadParametri($(this).parent().parent().children()[0].innerText)"></a></td></tr>');
+							'<td style="vertical-align:middle;" class="col-sm-1"><a href="#modalparametri"  class="glyphicon glyphicon-cog" data-toggle="modal" style="font-size:22px;" onclick="loadParametri(\'' +obj.ID_SERVIZIO+ '\')"></a></td></tr>');
 					});
 					
 		                           engine.clear();
