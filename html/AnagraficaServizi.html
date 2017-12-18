@@ -1,0 +1,242 @@
+ 
+
+
+<div id="AnagraficaServizi" class="modal fade">
+	<div class="modal-dialog" style="width:80vw">
+		<div class="modal-content">
+			<div class="service-gw">
+			 
+	 
+				<h1>Servizi Anagrafica</h1>
+				<hr>
+				
+				
+				<div class="service-gw" style="margin-left: 0px;">
+					<h3>Filtra servizi anagrafica</h3>
+					<input id="searchAnagraficaServizi" type="text" class="typeahead tt-query" autocomplete="off" spellcheck="false">
+				</div>
+				<div class="form-group">
+					<p id="demo"> </p>
+				</div>
+			</div>
+	 
+			<div class="service-gw">
+				<table class="table table-striped gw-table">
+					<thead style="max-width: 96%;">
+						<tr>
+							<th>ID_SERVIZIO</th>
+							<th>BUSINESS_UNIT</th>
+							<th>APPLICAZIONE</th>
+							<th>SERVIZIO</th>
+							<th>URL</th>
+							<th>DESCRIZIONE</th>
+						</tr>
+					</thead>
+					<tbody id="AnagServizi" class="scrollable-tbody gw-tbody">
+					</tbody>
+				</table>
+				<div id="AnagraficaServizi-message"></div>
+				<br>
+				<div class="modal-footer">
+					<img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="modalparametri" class="modal fade">
+		<div class="modal-dialog pull-right" style="width:60vw; margin:2vw">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Parametri </h4>
+				</div>
+				<div class="service-gw">
+					<table class="table table-striped gw-table">
+						<thead>
+							<tr>
+								<th>ID_PARAMETRO</th>
+								<th>ID_SERVIZIO</th>
+								<th>NOME_PARAMETRO</th>
+								<th>OBBLIGATORIO</th>
+								<th>TIPO_PARAMETRO</th>
+								<th>DATATYPE</th>
+							 
+								
+							</tr>
+						</thead>
+						<tbody id="parametri" class="scrollable-tbody gw-tbody">
+						</tbody>
+					</table>
+					<div id="parametri-message"></div>
+				</div>
+				<div class="modal-footer">
+			     	
+					<button type="button" class="btn btn-default" data-target="#modalparametri" onclick="$('#modalparametri').modal('hide');">Chiudi</button>
+					 
+				</div>
+				
+				
+				
+			</div>
+		</div>
+	</div>
+	
+	
+	<script>
+		var engine = null;
+		var token = parseQuery(window.location.search).user;
+		
+		function refreshAnagraficaServizi(){
+			var contact = null;
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					// Typical action to be performed when the document is ready:
+					contact = xhttp.responseText;
+					var body = $("#AnagServizi");
+					body.empty();
+					var AnagServizi = JSON.parse(contact).map(function(obj) {
+						return obj.SERVIZIO;
+					});
+					JSON.parse(contact).forEach(function(obj) {
+						body.append('<tr>' +
+							'<td style="vertical-align:middle;">' + obj.ID_SERVIZIO+ '</td>' +
+							'<td style="vertical-align:middle;">' + obj.BUSINESS_UNIT + '</td>' +
+							'<td style="vertical-align:middle;">' + obj.APPLICAZIONE + '</td>' +
+							'<td style="vertical-align:middle;">' + obj.SERVIZIO + '</td>' +
+							'<td style="vertical-align:middle;">' + obj.URL + '</td>' +
+							
+							
+							 
+							'<td style="vertical-align:middle;"><a href="#modalparametri"  class="glyphicon glyphicon-cog" data-toggle="modal" style="font-size:22px;" onclick="loadParametri($(this).parent().parent().children()[0].innerText)"></a></td></tr>');
+					});
+					
+		                           engine.clear();
+		                           engine.local = AnagServizi;
+		                           engine.initialize(true);
+				}
+			};
+			xhttp.open("GET", "/sys/anagrafica", true);
+			xhttp.send();
+		};
+		
+		function loadParametri(id){
+			$.ajax({
+		                       type: "GET",
+		                       cache: false,
+		                       url: '/sys/parametri?servizio='+id+'&user=' + token,
+		                       data: '',
+		                       success: function(data) {
+							   
+														   var parametri = $('#parametri');
+														   parametri.empty();
+														   data.forEach(function(obj) {
+																					   parametri.append(
+																											'<tr>'+
+																											'<td>'+obj.ID_PARAMETRO+'</td>'+
+																											'<td>'+obj.ID_SERVIZIO+'</td>'+
+																											'<td>'+obj.NOME_PARAMETRO+'</td>'+
+																											'<td>'+obj.OBBLIGATORIO+'</td>'+
+																											'<td>'+obj.TIPO_PARAMETRO+'</td>'+
+																											
+																											'<td>'+obj.DATATYPE+' <span class="label label-primary" data-toggle="tooltip" title="'+obj.DOMINIO+'">Info</span></td>'+
+																										 
+																											
+																											
+																											'</tr>');
+																										
+															
+																					 });
+																					 
+																					  $('[data-toggle="popover"]').popover(); 
+																					  $('[data-toggle="tooltip"]').tooltip();   
+ 																				 
+												
+															$('.btn-toggle').click(function() {
+																											if ($(this).find('.active').size() > 0) {
+																												$(this).find('.btn').toggleClass('active');
+																												$(this).find('.btn').toggleClass('btn-primary');
+																											}
+																											
+																											$(this).find('.btn').toggleClass('btn-default');
+																							   });
+		                       }
+		                   });
+		};
+		
+		 
+		
+		
+		
+		
+		$(document).ready(function(e) {
+		
+		    
+			
+			
+			refreshAnagraficaServizi();
+			$("#AnagraficaServizi").on("hidden.bs.modal", function(){
+				$('#AnagraficaServizi-message').replaceWith('<div id="AnagraficaServizi-message"></div>');
+			});
+			$("#modalparametri").on("hidden.bs.modal", function(){
+				$('#parametri-message').replaceWith('<div id="parametri-message"></div>');
+			});
+			
+			// Constructing the suggestion engine
+			engine = new Bloodhound({
+				datumTokenizer: Bloodhound.tokenizers.whitespace,
+				queryTokenizer: Bloodhound.tokenizers.whitespace,
+				local: AnagServizi
+			});
+			
+			// Initializing the typeahead
+			$('.typeahead').typeahead({
+				hint: true,
+				highlight: true,
+				/* Enable substring highlighting */
+				minLength: 1 /* Specify minimum characters required for showing result */
+			}, {
+				name: 'AnagServizi',
+				source: engine
+			});
+				
+			$("#searchAnagraficaServizi").keyup(function(e) {
+				var servizio = $("#searchAnagraficaServizi").val();
+				var rows = $("#AnagServizi").find("tr").hide();
+				if (this.value.length) {
+					var data = this.value.split(" ");
+					$.each(data, function(i, v) {
+						rows.filter(":contains('" + servizio + "')").show();
+					});
+				} else rows.show();
+		
+			});
+		
+			$("#searchAnagraficaServizi").change(function(e) {
+				var servizio = $("#searchAnagraficaServizi").val();
+				var rows = $("#AnagServizi").find("tr").hide();
+				if (this.value.length) {
+					var data = this.value.split(" ");
+					$.each(data, function(i, v) {
+						rows.filter(":contains('" + servizio + "')").show();
+					});
+				} else rows.show();
+		
+			});
+	   
+			 
+		});
+		
+		
+		               
+		           
+	</script>
+	
+
+	
+
+	 
+
+	
+</div>

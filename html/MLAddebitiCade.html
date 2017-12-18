@@ -1,0 +1,44 @@
+<!-- Modal HTML -->
+<div id="MLAddebitiCade" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="service-gw">
+				<div class="span12">
+					<form id="upload-ml-addebiti-cade" role="form" action="/ime/addebiti_cade?db=C2&separatore=;&formatoData=dd/mm/yyyy&separatoreDecimali=,." enctype="multipart/form-data" method="post">
+						<h2>Creazione addebiti CADE Mercato Libero</h2>
+						<hr>
+						<div class="form-group">
+							<input type="file" name="example">
+						</div>
+							
+						<div class="form-group">
+							<input type="submit" class="btn btn-primary" value="Submit">
+							<input type="reset" class="btn btn-default" value="Reset" onclick="resetMessage('MLAddebitiCadeMessage')">
+						</div>
+						
+						<div id="MLAddebitiCadeMessage">
+						</div>
+						
+							
+						<script>
+							$.support.cors = true;
+							uploadFileHandler('MLAddebitiCade', 'upload-ml-addebiti-cade', /^.*\.csv$/, 'MLAddebitiCadeMessage');
+						</script>
+						
+					</form>
+					
+				</div>
+				<div class="modal-footer">
+					<img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png"></img>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$('#upload-ml-addebiti-cade input[type="file"]').filestyle({
+			buttonName: 'btn-warning'
+		});
+	</script>
+</div>

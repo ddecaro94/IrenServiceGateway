@@ -1,0 +1,44 @@
+<!-- Modal HTML -->
+<div id="SE3ChiusuraContratti" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="service-gw">
+				<div class="span12">
+					<form id="upload-chiusura-contratti" role="form" action="/ime/mt/chiusura_contratti?separatore=|&formatoData=dd/mm/yyyy&separatoreDecimali=,." enctype="multipart/form-data" method="post">
+						<h2>Caricamento SE3 Chiusura Contratti</h2>
+						<hr>
+						<div class="form-group">
+							<input type="file" name="example">
+						</div>
+							
+						<div class="form-group">
+							<input type="submit" class="btn btn-primary" value="Submit">
+							<input type="reset" class="btn btn-default" value="Reset" onclick="resetMessage('SE3ChiusuraContrattiMessage')">
+						</div>
+						
+						<div id="SE3ChiusuraContrattiMessage">
+						</div>
+						
+							
+						<script>
+							$.support.cors = true;
+							uploadFileHandler('SE3ChiusuraContratti', 'upload-chiusura-contratti', /^.*\.csv$/, 'SE3ChiusuraContrattiMessage');
+						</script>
+						
+					</form>
+					
+				</div>
+				<div class="modal-footer">
+					<img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png"></img>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$('#upload-chiusura-contratti input[type="file"]').filestyle({
+			buttonName: 'btn-warning'
+		});
+	</script>
+</div>

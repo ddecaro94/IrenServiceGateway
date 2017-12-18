@@ -1,0 +1,91 @@
+<div id="ContabilitaAEEG" class="modal fade">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="service-gw">
+            <h1>Interfaccia contabilità AEEG</h1>
+            <hr>
+            <form id="contabilita-aeeg" class="form-horizontal" action="/corporate/contabilita/file?" enctype="multipart/form-data" method="post">
+               <div class="form-group">
+                  <div class="col-xs-12">
+                     <label class="control-label" for="partitaiva">Partita Iva</label>
+                     <select class="form-control gw-input" id="partitaiva" required >
+                        <option value=""></option>
+                        <option value="01178580997">IREN MERCATO (01178580997)</option>
+                        <option value="02064090026">ATENA TRADING (02064090026)</option>
+                        <option value="01791490343">IRETI (01791490343)</option>
+                     </select>
+                  </div>
+               </div>
+               <div class="form-group ">
+                  <div class="col-xs-12">
+                     <label class="control-label requiredField" for="date">
+                     Data Registrazione
+                     </label>
+                     <div class="input-group gw-input">
+                        <div class="input-group-addon">
+                           <i class="glyphicon glyphicon-calendar">
+                           </i>
+                        </div>
+                        <input class="form-control" id="aeeg-dataregistrazione" name="date" placeholder="GG/MM/AAAA" type="text" required/>
+                     </div>
+                  </div>
+               </div>
+               <br>
+               <div id="ContabilitaAEEGMessage"></div>
+               <div class="form-group">
+                  <div class="col-xs-12">
+                     <input type="submit" class="btn btn-primary" value="Submit" >
+                     <input type="reset" class="btn btn-default" value="Reset" onclick="resetContabilitaEmessoIncassatoAEEGMessage()">
+                  </div>
+               </div>
+            </form>
+            <div class="modal-footer">
+               <img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png"></img>
+               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+         </div>
+      </div>
+   </div>
+   <script>
+    function resetContabilitaEmessoIncassatoAEEGMessage() {
+		$('#ContabilitaAEEGMessage').replaceWith('<div id="ContabilitaAEEGMessage"></div>');
+    }
+      
+    $.support.cors = true;
+	$("#contabilita-aeeg").submit(function(e) {
+
+		var messaggioXml   = 'societa=XML_AEEG&partitaIva='+document.getElementById("partitaiva").options[document.getElementById("partitaiva").selectedIndex].value+'&dataRegistrazione='+document.getElementById("aeeg-dataregistrazione").value;
+		
+		e.preventDefault();
+		e.stopImmediatePropagation();
+		$.ajax({
+			type: "POST",
+			cache: false,
+			url: $(this).attr('action')+messaggioXml,
+			data: '',
+			dataType: 'xml',
+			success: function(data) {
+				$('#ContabilitaAEEGMessage').replaceWith('<div id="ContabilitaAEEGMessage" class="alert alert-info"><strong>Info - </strong>' + data.firstChild.firstChild.textContent + '</div>');
+			} 
+		});	
+    });
+                                
+             
+    $(document).ready(function(){
+        var date_input=$('input[id="aeeg-dataregistrazione"]');
+		var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+        date_input.datepicker({
+			format: 'dd/mm/yyyy',
+			container: container,
+			todayHighlight: true,
+			autoclose: true,
+		})
+					
+		$("#ContabilitaAEEG").on("hidden.bs.modal", function(){
+			$('#ContabilitaAEEGMessage').replaceWith('<div id="ContabilitaAEEGMessage"></div>');
+			document.getElementById('contabilita-aeeg').reset();
+		});
+	})
+              
+   </script>
+</div>
