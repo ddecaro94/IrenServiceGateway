@@ -1,4 +1,4 @@
-function uploadFileHandler(formID, regex, messageDivID){
+function uploadFileHandler(modalID, formID, regex, messageDivID){
 	var reader = new FileReader();
 	$('#'+formID+' input[type="submit"]').addClass('disabled');
 	
@@ -51,10 +51,17 @@ function uploadFileHandler(formID, regex, messageDivID){
 		}
 	});
 									
-
+	$('#'+modalID).on("hidden.bs.modal", function(){
+		resetMessage(messageDivID);
+		$('#'+formID)[0].reset();
+	});
 							
 }	
 
 function resetMessage(messageDivID) {
 	$('#'+messageDivID).replaceWith('<div id="'+messageDivID+'"></div>');
+}
+
+function resetFormOnClose(modalID){
+	
 }
