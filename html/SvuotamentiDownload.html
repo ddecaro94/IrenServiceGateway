@@ -1,0 +1,73 @@
+<div id="SvuotamentiDownload" class="modal fade">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="service-gw">
+            <h1>ECOS SVUOTAMENTI</h1>
+            <hr>
+			                                                             
+            <form id="svuotamenti-ecos" class="form-horizontal" action="/ambiente/ecos_sap_svuotamenti?" enctype="multipart/form-data" method="post">
+               <div class="form-group">
+						<div class="col-xs-12">
+							<label class="control-label" for="codiceEsportazione-svuo">Codice Esportazione</label>
+							<input type="text" class="form-control gw-input" id="codiceEsportazione-svuo" placeholder="Codice Esportazione" required>
+						</div>
+			   </div>
+               <br>
+               <div id="SvuotamentiMessage"></div>
+               <div class="form-group">
+                  <div class="col-xs-12">
+                     <input type="submit" class="btn btn-primary" value="Submit" >
+                     <input type="reset" class="btn btn-default" value="Reset" onclick="resetSvuotamentiMessage()">
+                  </div>
+               </div>
+            </form>
+            <div class="modal-footer">
+               <img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png"></img>
+               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+         </div>
+      </div>
+   </div>
+   <script>
+    function resetSvuotamentiMessage() {
+		$('#SvuotamentiMessage').replaceWith('<div id="SvuotamentiMessage"></div>');
+    }
+      
+    $.support.cors = true;
+	$("#svuotamenti-ecos").submit(function(e) {
+
+		var messaggioXml   = 'sapexpv_cod='+document.getElementById("codiceEsportazione-svuo").value;
+		
+		e.preventDefault();
+		e.stopImmediatePropagation();
+		$.ajax({
+			type: "POST",
+			cache: false,
+			url: $(this).attr('action')+messaggioXml,
+			data: '',
+			dataType: 'xml',
+			success: function(data) {
+				$('#SvuotamentiMessage').replaceWith('<div id="SvuotamentiMessage" class="alert alert-info"><strong>Info - </strong>' + data.firstChild.firstChild.textContent + '</div>');
+			} 
+		});	
+    });
+                                
+             
+    $(document).ready(function(){
+        var date_input=$('input[id="aeeg-dataregistrazione"]');
+		var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+        date_input.datepicker({
+			format: 'dd/mm/yyyy',
+			container: container,
+			todayHighlight: true,
+			autoclose: true,
+		})
+					
+		$("#SvuotamentiDownload").on("hidden.bs.modal", function(){
+			$('#SvuotamentiMessage').replaceWith('<div id="SvuotamentiMessage"></div>');
+			document.getElementById('svuotamenti-ecos').reset();
+		});
+	})
+              
+   </script>
+</div>

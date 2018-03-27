@@ -1,0 +1,73 @@
+<div id="ConferimentiDownload" class="modal fade">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="service-gw">
+            <h1>ECOS CONFERIMENTI</h1>
+            <hr>
+			                                                             
+            <form id="conferimenti-ecos" class="form-horizontal" action="/ambiente/ecos_sap_conferimenti?" enctype="multipart/form-data" method="post">
+               <div class="form-group">
+						<div class="col-xs-12">
+							<label class="control-label" for="codiceEsportazione-conf">Codice Esportazione</label>
+							<input type="text" class="form-control gw-input" id="codiceEsportazione-conf" placeholder="Codice Esportazione" required>
+						</div>
+			   </div>
+               <br>
+               <div id="ConferimentiMessage"></div>
+               <div class="form-group">
+                  <div class="col-xs-12">
+                     <input type="submit" class="btn btn-primary" value="Submit" >
+                     <input type="reset" class="btn btn-default" value="Reset" onclick="resetConferimentiMessage()">
+                  </div>
+               </div>
+            </form>
+            <div class="modal-footer">
+               <img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png"></img>
+               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+         </div>
+      </div>
+   </div>
+   <script>
+    function resetConferimentiMessage() {
+		$('#ConferimentiMessage').replaceWith('<div id="ConferimentiMessage"></div>');
+    }
+      
+    $.support.cors = true;
+	$("#conferimenti-ecos").submit(function(e) {
+
+		var messaggioXml   = 'sapexpv_cod='+document.getElementById("codiceEsportazione-conf").value;
+		
+		e.preventDefault();
+		e.stopImmediatePropagation();
+		$.ajax({
+			type: "POST",
+			cache: false,
+			url: $(this).attr('action')+messaggioXml,
+			data: '',
+			dataType: 'xml',
+			success: function(data) {
+				$('#ConferimentiMessage').replaceWith('<div id="ConferimentiMessage" class="alert alert-info"><strong>Info - </strong>' + data.firstChild.firstChild.textContent + '</div>');
+			} 
+		});	
+    });
+                                
+             
+    $(document).ready(function(){
+        var date_input=$('input[id="aeeg-dataregistrazione"]');
+		var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+        date_input.datepicker({
+			format: 'dd/mm/yyyy',
+			container: container,
+			todayHighlight: true,
+			autoclose: true,
+		})
+					
+		$("#ConferimentiDownload").on("hidden.bs.modal", function(){
+			$('#ConferimentiMessage').replaceWith('<div id="ConferimentiMessage"></div>');
+			document.getElementById('conferimenti-ecos').reset();
+		});
+	})
+              
+   </script>
+</div>

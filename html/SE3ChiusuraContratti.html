@@ -4,7 +4,7 @@
 		<div class="modal-content">
 			<div class="service-gw">
 				<div class="span12">
-					<form id="upload-chiusura-contratti" role="form" action="/ime/mt/chiusura_contratti?separatore=|&formatoData=dd/mm/yyyy&separatoreDecimali=,." enctype="multipart/form-data" method="post">
+					<form id="upload-chiusura-contratti" role="form" action="/ime/mt/chiusura_contratti?separatore=;&formatoData=dd/mm/yyyy&separatoreDecimali=,." enctype="multipart/form-data" method="post">
 						<h2>Caricamento SE3 Chiusura Contratti</h2>
 						<hr>
 						<div class="form-group">
@@ -22,7 +22,7 @@
 							
 						<script>
 							$.support.cors = true;
-							uploadFileHandler('upload-chiusura-contratti', /^.*\.csv$/, 'SE3ChiusuraContrattiMessage');
+							uploadFileHandler('SE3ChiusuraContratti', 'upload-chiusura-contratti', /^.*\.csv$/, 'SE3ChiusuraContrattiMessage');
 						</script>
 						
 					</form>

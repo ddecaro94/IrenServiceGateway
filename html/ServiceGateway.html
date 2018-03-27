@@ -197,6 +197,21 @@
 				</div>
 			</div>
 			<script>
+      
+        function SortByCategory(a, b){
+          var aCat = Object.keys(a)[0].toLowerCase();
+          var bCat = Object.keys(b)[0].toLowerCase();
+          
+          return (aCat < bCat) ? -1 : 1;
+        }
+                
+        function SortByName(a, b){
+          var aName = a.Description.toLowerCase();
+          var bName = b.Description.toLowerCase();
+          return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+        }
+        
+
 				var token = parseQuery(window.location.search).user;
 				$(document).ready(function(e) {
 					$.ajax({
@@ -222,11 +237,14 @@
 						data: '',
 						dataType: 'json',
 						success: function(data) {
+              data.sort(SortByCategory)
 							data.forEach(function(obj){
 								var categoryName = Object.keys(obj)[0];
 								var menuName = categoryName+'-menu';
 								$('#navbar-categories').append('<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" href="#">'+categoryName +'<b class="caret"></b></a><ul id="'+menuName+'" class="dropdown-menu scrollable-menu"></ul></li>');
-								obj[categoryName].forEach(function(cat){
+                var sortedArray = obj[categoryName];
+                sortedArray.sort(SortByName);
+								sortedArray.forEach(function(cat){
 									var test = $("[id='"+menuName+"']");
 									$("[id='"+menuName+"']").append('<li><a href="#'+cat.Name+'" data-toggle="modal">'+cat.Description+'</a></li>');
 									$.ajax({

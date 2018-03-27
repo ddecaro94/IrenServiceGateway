@@ -1,0 +1,91 @@
+<div id="ContabilitaIntercompanyIREN_SPA" class="modal fade">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="service-gw">
+            <h1>CONTABILITA INTERCOMPANY NETA MERCATO IREN SPA</h1>
+            <hr>
+            <form id="ContabilitaIntercompanyIREN_SPA-form" class="form-horizontal" action="/corporate/contabilita/start?" enctype="multipart/form-data" method="post">
+
+
+               <div class="form-group">                                              
+                  <div class="col-xs-12">
+                    <label class="control-label" for="Intercompany-idlancioIREN_SPA">Id Lancio:</label>
+                    <input type="number" class="form-control" id="Intercompany-idlancioIREN_SPA" placeholder="Intercompany-idlancioIREN_SPA" required="">
+                  </div>
+               </div>
+
+               <div class="form-group ">
+                  <div class="col-xs-12">
+                     <label class="control-label requiredField" for="date">
+                     Data Registrazione
+                     </label>
+                     <div class="input-group gw-input">
+                        <div class="input-group-addon">
+                           <i class="glyphicon glyphicon-calendar">
+                           </i>
+                        </div>
+                        <input class="form-control" id="Intercompany-dataregistrazioneIREN_SPA" name="date" placeholder="GG/MM/AAAA" type="text" required/>
+                     </div>
+                  </div>
+               </div>
+               <br>
+               <div id="intercompanyMessageIREN_SPA"></div>
+               <div class="form-group">
+                  <div class="col-xs-12">
+                     <input type="submit" class="btn btn-primary" value="Submit" >
+                     <input type="reset" class="btn btn-default" value="Reset" onclick="resetintercompanyMessageIREN_SPA()">
+                  </div>
+               </div>
+            </form>
+            <div class="modal-footer">
+               <img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png"></img>
+               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+         </div>
+      </div>
+   </div>
+   <script>
+    function resetintercompanyMessageIREN_SPA() {
+		$('#intercompanyMessageIREN_SPA').replaceWith('<div id="intercompanyMessageIREN_SPA"></div>');
+    }
+      
+    $.support.cors = true;
+	$("#ContabilitaIntercompanyIREN_SPA-form").submit(function(e) {
+
+       
+      var messaggioXml   = 'societa=N3&idLancio='+document.getElementById("Intercompany-idlancioIREN_SPA").value+'&tipoFlusso=X&dataReg='+document.getElementById("Intercompany-dataregistrazioneIREN_SPA").value+'&socIntercompany=0100'; 
+            
+
+		e.preventDefault();
+		e.stopImmediatePropagation();
+		$.ajax({
+			type: "POST",
+			cache: false,
+			url: $(this).attr('action')+messaggioXml,
+			data: '',
+			dataType: 'xml',
+			success: function(data) {
+				$('#intercompanyMessageIREN_SPA').replaceWith('<div id="intercompanyMessageIREN_SPA" class="alert alert-info"><strong>Info - </strong>' + data.firstChild.firstChild.textContent + '</div>');
+			} 
+		});	
+    });
+                                
+             
+    $(document).ready(function(){
+        var date_input=$('input[id="Intercompany-dataregistrazioneIREN_SPA"]');
+		var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+        date_input.datepicker({
+			format: 'dd/mm/yyyy',
+			container: container,
+			todayHighlight: true,
+			autoclose: true,
+		})
+					
+		$("#ContabilitaIntercompanyIREN_SPA").on("hidden.bs.modal", function(){
+			$('#intercompanyMessageIREN_SPA').replaceWith('<div id="intercompanyMessageIREN_SPA"></div>');
+			document.getElementById('ContabilitaIntercompanyIREN_SPA-form').reset();
+		});
+	})
+              
+   </script>
+</div>

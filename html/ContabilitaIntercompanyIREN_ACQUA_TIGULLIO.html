@@ -1,0 +1,91 @@
+<div id="ContabilitaIntercompanyIREN_ACQUA_TIGULLIO" class="modal fade">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="service-gw">
+            <h1>CONTABILITA INTERCOMPANY NETA MERCATO IREN ACQUA TIGULLIO</h1>
+            <hr>
+            <form id="ContabilitaIntercompanyIREN_ACQUA_TIGULLIO-form" class="form-horizontal" action="/corporate/contabilita/start?" enctype="multipart/form-data" method="post">
+
+
+               <div class="form-group">                                              
+                  <div class="col-xs-12">
+                    <label class="control-label" for="Intercompany-idlancioIREN_ACQUA_TIGULLIO">Id Lancio:</label>
+                    <input type="number" class="form-control" id="Intercompany-idlancioIREN_ACQUA_TIGULLIO" placeholder="Intercompany-idlancioIREN_ACQUA_TIGULLIO" required="">
+                  </div>
+               </div>
+
+               <div class="form-group ">
+                  <div class="col-xs-12">
+                     <label class="control-label requiredField" for="date">
+                     Data Registrazione
+                     </label>
+                     <div class="input-group gw-input">
+                        <div class="input-group-addon">
+                           <i class="glyphicon glyphicon-calendar">
+                           </i>
+                        </div>
+                        <input class="form-control" id="Intercompany-dataregistrazioneIREN_ACQUA_TIGULLIO" name="date" placeholder="GG/MM/AAAA" type="text" required/>
+                     </div>
+                  </div>
+               </div>
+               <br>
+               <div id="intercompanyMessageIREN_ACQUA_TIGULLIO"></div>
+               <div class="form-group">
+                  <div class="col-xs-12">
+                     <input type="submit" class="btn btn-primary" value="Submit" >
+                     <input type="reset" class="btn btn-default" value="Reset" onclick="resetintercompanyMessageIREN_ACQUA_TIGULLIO()">
+                  </div>
+               </div>
+            </form>
+            <div class="modal-footer">
+               <img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png"></img>
+               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+         </div>
+      </div>
+   </div>
+   <script>
+    function resetintercompanyMessageIREN_ACQUA_TIGULLIO() {
+		$('#intercompanyMessageIREN_ACQUA_TIGULLIO').replaceWith('<div id="intercompanyMessageIREN_ACQUA_TIGULLIO"></div>');
+    }
+      
+    $.support.cors = true;
+	$("#ContabilitaIntercompanyIREN_ACQUA_TIGULLIO-form").submit(function(e) {
+
+       
+      var messaggioXml   = 'societa=N3&idLancio='+document.getElementById("Intercompany-idlancioIREN_ACQUA_TIGULLIO").value+'&tipoFlusso=X&dataReg='+document.getElementById("Intercompany-dataregistrazioneIREN_ACQUA_TIGULLIO").value+'&socIntercompany=7200'; 
+            
+
+		e.preventDefault();
+		e.stopImmediatePropagation();
+		$.ajax({
+			type: "POST",
+			cache: false,
+			url: $(this).attr('action')+messaggioXml,
+			data: '',
+			dataType: 'xml',
+			success: function(data) {
+				$('#intercompanyMessageIREN_ACQUA_TIGULLIO').replaceWith('<div id="intercompanyMessageIREN_ACQUA_TIGULLIO" class="alert alert-info"><strong>Info - </strong>' + data.firstChild.firstChild.textContent + '</div>');
+			} 
+		});	
+    });
+                                
+             
+    $(document).ready(function(){
+        var date_input=$('input[id="Intercompany-dataregistrazioneIREN_ACQUA_TIGULLIO"]');
+		var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+        date_input.datepicker({
+			format: 'dd/mm/yyyy',
+			container: container,
+			todayHighlight: true,
+			autoclose: true,
+		})
+					
+		$("#ContabilitaIntercompanyIREN_ACQUA_TIGULLIO").on("hidden.bs.modal", function(){
+			$('#intercompanyMessageIREN_ACQUA_TIGULLIO').replaceWith('<div id="intercompanyMessageIREN_ACQUA_TIGULLIO"></div>');
+			document.getElementById('ContabilitaIntercompanyIREN_ACQUA_TIGULLIO-form').reset();
+		});
+	})
+              
+   </script>
+</div>

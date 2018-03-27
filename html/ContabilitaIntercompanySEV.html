@@ -1,0 +1,108 @@
+<div id="ContabilitaIntercompanySEV" class="modal fade">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="service-gw">
+            <h1>CONTABILITA INTERCOMPANY NETA MERCATO SEV</h1>
+            <hr>
+            <form id="ContabilitaIntercompanySEV-form" class="form-horizontal" action="/corporate/contabilita/start?" enctype="multipart/form-data" method="post">
+
+
+               <div class="form-group">                                              
+                  <div class="col-xs-12">
+                    <label class="control-label" for="Intercompany-idlancioSEV">Id Lancio:</label>
+                    <input type="number" class="form-control" id="Intercompany-idlancioSEV" placeholder="Intercompany-idlancioSEV" required="">
+                  </div>
+               </div>
+
+               <div class="form-group ">
+                  <div class="col-xs-12">
+                     <label class="control-label requiredField" for="date">
+                     Data Registrazione
+                     </label>
+                     <div class="input-group gw-input">
+                        <div class="input-group-addon">
+                           <i class="glyphicon glyphicon-calendar">
+                           </i>
+                        </div>
+                        <input class="form-control" id="Intercompany-dataregistrazioneSEV" name="date" placeholder="GG/MM/AAAA" type="text" required/>
+                     </div>
+                  </div>
+               </div>
+
+               <!--
+
+               <div class="form-group">
+                  <div class="col-xs-12">
+                     <label class="control-label" for="societaintercompany">Società Intercompany</label>
+                     <select class="form-control gw-input" id="societaintercompany" required >
+                        <option value=""></option>
+                        <option value="9000">IME</option>
+                        <option value="9915">SEV</option>
+                     </select>
+                  </div>
+               </div>
+               -->
+
+
+
+               <br>
+               <div id="intercompanyMessageSEV"></div>
+               <div class="form-group">
+                  <div class="col-xs-12">
+                     <input type="submit" class="btn btn-primary" value="Submit" >
+                     <input type="reset" class="btn btn-default" value="Reset" onclick="resetintercompanyMessageSEV()">
+                  </div>
+               </div>
+            </form>
+            <div class="modal-footer">
+               <img class="navbar-brand" src="https://www.gruppoiren.it/iren_gruppo-theme/images/logo_iren_color.png"></img>
+               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+         </div>
+      </div>
+   </div>
+   <script>
+    function resetintercompanyMessageSEV() {
+		$('#intercompanyMessageSEV').replaceWith('<div id="intercompanyMessageSEV"></div>');
+    }
+      
+    $.support.cors = true;
+	$("#ContabilitaIntercompanySEV-form").submit(function(e) {
+
+       
+      var messaggioXml   = 'societa=N3&idLancio='+document.getElementById("Intercompany-idlancioSEV").value+'&tipoFlusso=X&dataReg='+document.getElementById("Intercompany-dataregistrazioneSEV").value+'&socIntercompany=9915'; //+document.getElementById("societaintercompany").options[document.getElementById("societaintercompany").selectedIndex].value;
+            
+
+		e.preventDefault();
+		e.stopImmediatePropagation();
+		$.ajax({
+			type: "POST",
+			cache: false,
+			url: $(this).attr('action')+messaggioXml,
+			data: '',
+			dataType: 'xml',
+			success: function(data) {
+				$('#intercompanyMessageSEV').replaceWith('<div id="intercompanyMessageSEV" class="alert alert-info"><strong>Info - </strong>' + data.firstChild.firstChild.textContent + '</div>');
+			} 
+		});	
+    });
+                                
+             
+    $(document).ready(function(){
+        var date_input=$('input[id="Intercompany-dataregistrazioneSEV"]');
+		var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+        date_input.datepicker({
+			format: 'dd/mm/yyyy',
+			container: container,
+			todayHighlight: true,
+			autoclose: true,
+		})
+					
+		$("#ContabilitaIntercompanySEV").on("hidden.bs.modal", function(){
+			$('#intercompanyMessageSEV').replaceWith('<div id="intercompanyMessageSEV"></div>');
+			document.getElementById('ContabilitaIntercompanySEV-form').reset();
+		});
+	})
+              
+   </script>
+</div>
